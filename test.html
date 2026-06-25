@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation Test</title>
+    <style>
+        body { margin: 0; font-family: sans-serif; background: #f0f0f0; }
+        
+        /* The Pop-up Overlay */
+        #characterPopup {
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(0,0,0,0.7); 
+            z-index: 9999; 
+            justify-content: center; 
+            align-items: flex-end;
+        }
+
+        /* The Sliding Box */
+        #popupContent {
+            width: 100%; 
+            max-width: 1300px; 
+            height: 50%; 
+            background: silver; 
+            border-radius: 10px 10px 0 0; 
+            position: relative; 
+            animation: slideUp 0.6s ease-out; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div style="display: flex; justify-content: center; padding-top: 50px;">
+        <button onclick="showPopup()" style="padding: 15px 30px; font-size: 18px; cursor: pointer; background: gold; border: none; border-radius: 2px;">
+            Choose Character & Simulate
+        </button>
+    </div>
+
+    <div id="characterPopup">
+        <div id="popupContent">
+            <div style="width: 100%; height: 250px; background: gold;"></div>
+            
+            <div style="padding: 24px;">
+                <h2 style="color: #E6BE8A;">Character Name</h2>
+                <p style="font-size: 1.1rem; line-height: 1.6;">
+                    Welcome to the Optimum ecosystem! Your character has been activated. 
+                    They serve as the primary guardian of data flow, ensuring that every 
+                    process remains balanced and optimized.
+                </p>
+                <h3 style="margin-top: 20px;">Duties:</h3>
+                <ul>
+                    <li>System Monitoring</li>
+                    <li>Energy Efficiency Optimization</li>
+                    <li>Network Stability Maintenance</li>
+                </ul>
+                <button onclick="hidePopup()" style="margin-top: 20px; padding: 10px; width: 100%; cursor: pointer;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showPopup() {
+            document.getElementById('characterPopup').style.display = 'flex';
+        }
+
+        function hidePopup() {
+            document.getElementById('characterPopup').style.display = 'none';
+        }
+    </script>
+
+</body>
+</html>
+

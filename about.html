@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(180deg, #B0B4BE 0%, #E8EAF0 50%, #F5F5F5 85%, #1a1a1a 100%);
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+    }
+    #topNav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(15px);
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      box-sizing: border-box;
+    }
+    #sideMenu {
+      position: fixed;
+      top: 0;
+      right: -350px;
+      width: 300px;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(15px);
+      z-index: 99999;
+      transition: right 0.4s ease;
+      padding: 80px 30px 30px;
+    }
+    #sideMenu.open { right: 0; }
+    #menuOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 99998;
+      display: none;
+    }
+    .hamburger {
+      font-size: 1.8em;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+    }
+    .menuLink {
+      display: block;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9em;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+    .menuLink:hover { color: #FFD700; }
+
+
+.revealBox {
+  opacity: 0;
+  transform: translateY(60px);
+  transition: all 0.8s ease;
+}
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+<img id="aball1" src="optimumSticker1.png" style="position:fixed; width:50px; z-index:999; pointer-events:none;">
+<img id="aball2" src="optimumSticker1.png" style="position:fixed; width:110px; z-index:999; pointer-events:none;">
+<img id="aball3" src="optimumSticker1.png" style="position:fixed; width:35px; z-index:999; pointer-events:none;">
+<img id="aball4" src="optimumSticker1.png" style="position:fixed; width:90px; z-index:999; pointer-events:none;">
+<img id="aball5" src="optimumSticker1.png" style="position:fixed; width:70px; z-index:999; pointer-events:none;">
+<img id="aball6" src="optimumSticker1.png" style="position:fixed; width:120px; z-index:999; pointer-events:none;">
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- Top Nav -->
+<div id="topNav">
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <img src="optimum-primeLogo.png" alt="Logo" style="height: 30px; width: auto;">
+    <h3 style="margin: 0; font-family: 'Anton', sans-serif; letter-spacing: 2px; font-size: 1.2em; color: white;">OPTIMUM PRIME</h3>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <span style="background: #333; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75em; letter-spacing: 2px;">BETA</span>
+    <button class="hamburger" onclick="toggleMenu()">&#9776;</button>
+  </div>
+</div>
+
+
+
+
+<!-- Menu Overlay -->
+<div id="menuOverlay" onclick="toggleMenu()"></div>
+
+<!-- Side Menu -->
+<div id="sideMenu">
+  <button onclick="toggleMenu()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 1.5em; cursor: pointer;">&times;</button>
+  <h3 style="font-family: 'Orbitron', sans-serif; color: white; letter-spacing: 2px; margin-bottom: 30px;">MENU</h3>
+  <a href="index.html" class="menuLink">HOME</a>
+  <a href="dashboard.html" class="menuLink">DASHBOARD</a>
+  <a href="battlefield.html" class="menuLink">BATTLE FIELD</a>
+  <a href="sitedeveloper.html" class="menuLink">SITE DEVELOPER</a>
+  <a href="about.html" class="menuLink">ABOUT</a>
+  <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+    <a href="login.html" style="display: block; background: white; color: black; font-family: 'Orbitron', sans-serif; font-size: 0.9em; letter-spacing: 2px; padding: 12px 20px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold;">LOGIN</a>
+  </div>
+</div>
+
+
+
+</div>
+
+<!-- Page content goes below here -->
+<div style="padding-top: 70px;">
+
+
+
+<div style="padding: 100px 20px 60px; max-width: 1200px; margin: 0 auto;">
+
+  <!-- Page Title -->
+  <h1 style="font-family: 'Anton', sans-serif; font-size: 2.5em; letter-spacing: 3px; text-align: center; margin-bottom: 10px;">ABOUT</h1>
+  <p style="font-family: 'Orbitron', sans-serif; font-size: 0.8em; color: #6B7280; text-align: center; letter-spacing: 2px; margin-bottom: 50px;">OPTIMUM PRIME — BETA v1.0</p>
+
+  <!-- What this site is -->
+  <div class="revealBox" style="background: white; border-radius: 16px; padding: 30px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1em; letter-spacing: 2px; color: #1a1a1a; margin-bottom: 16px;">WHAT IS THIS SITE?</h3>
+    <div style="height: 1px; background: linear-gradient(to right, #1a1a1a, transparent); margin-bottom: 16px;"></div>
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.95em; color: #6B7280; line-height: 1.8;">Optimum Prime is a community fan site built around the Optimum blockchain project. It's not just a page — it's an experience. You pick your warrior class, explore the ecosystem, check out the team behind the project, and stay updated on what's happening. Think of it as your personal gateway into the Optimum world, built by a community member who genuinely believes in what Optimum is building.</p>
+  </div>
+
+
+
+<div style="margin: 100px;"></div>
+
+
+
+  <!-- About Optimum -->
+  <div class="revealBox" style="background: white; border-radius: 16px; padding: 30px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1em; letter-spacing: 2px; color: #1a1a1a; margin-bottom: 16px;">ABOUT OPTIMUM</h3>
+    <div style="height: 1px; background: linear-gradient(to right, #1a1a1a, transparent); margin-bottom: 16px;"></div>
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.95em; color: #6B7280; line-height: 1.8;">Optimum is the Universal Data Acceleration Network — a project built to fix one of the most overlooked problems in blockchain: data movement. Most blockchains are slow not because of computation, but because data moves inefficiently. Optimum solves this using RLNC (Random Linear Network Coding), a technology that sends coded data packets across the network so that even if some packets are lost, the full data can still be recovered. On top of that, DeRAM decentralizes memory, making the whole system cheaper, faster and more resilient. It's built directly for Ethereum validators and designed to scale with a global digital economy.</p>
+  </div>
+
+
+
+<div style="margin: 100px;"></div>
+
+
+
+  <!-- Why this site exists -->
+  <div class="revealBox" style="background: white; border-radius: 16px; padding: 30px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1em; letter-spacing: 2px; color: #1a1a1a; margin-bottom: 16px;">WHY THIS SITE EXISTS</h3>
+    <div style="height: 1px; background: linear-gradient(to right, #1a1a1a, transparent); margin-bottom: 16px;"></div>
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.95em; color: #6B7280; line-height: 1.8;">Honestly? I built this because I wanted to contribute something real to the Optimum ecosystem — not just another thread or post, but something you can actually interact with. I wanted community members to have a space that feels like it belongs to them. Somewhere to track your presence, see what's happening, and feel connected to something bigger. That's what this is. It's a work in progress and it's going to keep growing.</p>
+  </div>
+
+
+<div style="margin: 150px;"></div>
+<img style="opacity: 0.7; display: block; margin: 0 auto; max-width: 100%;" src="optimum2.png" alt="A description of the image" width="70%">
+<div style="margin: 150px;"></div>
+
+
+  <!-- Site features -->
+  <div class="revealBox" style="background: white; border-radius: 16px; padding: 30px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1em; letter-spacing: 2px; color: #1a1a1a; margin-bottom: 16px;">WHAT'S ON THE SITE</h3>
+    <div style="height: 1px; background: linear-gradient(to right, #1a1a1a, transparent); margin-bottom: 16px;"></div>
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.95em; color: #6B7280; line-height: 1.8; margin-bottom: 10px;">🏠 <strong>Home</strong> — The main landing page. Pick your warrior class and explore Optimum's story.</p>
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.95em; color: #6B7280; line-height: 1.8; margin-bottom: 10px;">📊 <strong>Dashboard</strong> — Your personal space. Profile, achievements, tasks — all in one place.</p>
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.95em; color: #6B7280; line-height: 1.8; margin-bottom: 10px;">⚔️ <strong>Battlefield</strong> — Where the community comes alive. Upload art, suggest ideas, collaborate, and stay updated.</p>
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.95em; color: #6B7280; line-height: 1.8; margin-bottom: 10px;">👨‍💻 <strong>Site Developer</strong> — Learn about the person who built this and connect directly.</p>
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.95em; color: #6B7280; line-height: 1.8;">ℹ️ <strong>About</strong> — You're here. Now you know.</p>
+  </div>
+
+
+<div style="margin: 100px;"></div>
+
+
+
+  <!-- Disclaimer -->
+  <div class="revealBox" style="background: linear-gradient(145deg, #1a1a1a, #2d2d2d); border-radius: 16px; padding: 30px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
+    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1em; letter-spacing: 2px; color: #C0C0C0; margin-bottom: 16px;">DISCLAIMER</h3>
+    <div style="height: 1px; background: linear-gradient(to right, #C0C0C0, transparent); margin-bottom: 16px;"></div>
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.95em; color: #6B7280; line-height: 1.8;">This is a fan-made community site. It is not an official Optimum product and is not affiliated with or endorsed by the Optimum team. For official information, visit <a href="https://getoptimum.xyz" target="_blank" style="color: #C0C0C0;">getoptimum.xyz</a> or follow <a href="https://x.com/get_optimum" target="_blank" style="color: #C0C0C0;">@get_optimum</a> on X.</p>
+  </div>
+
+
+<div style="margin: 100px;"></div>
+
+
+  <!-- Version -->
+  <div class="revealBox" style="text-align: center; margin-top: 40px;">
+    <p style="font-family: 'Orbitron', sans-serif; font-size: 0.75em; color: #6B7280; letter-spacing: 3px;">BETA v1.0 — MORE UPDATES SOON</p>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<script>
+
+
+const SUPABASE_URL = 'https://hpjztfiijgkkbexpxxqz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhwanp0Zmlpamdra2JleHB4eHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NTA4ODUsImV4cCI6MjA5NzIyNjg4NX0.LbS4fFhnFWBg3U2dqV6eVERbX-GG4d0oPk40XKkMLSA';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT' || !session) {
+    window.location.href = 'login.html';
+  }
+});
+
+
+
+
+});
+
+function toggleMenu() {
+  document.getElementById('sideMenu').classList.toggle('open');
+  const overlay = document.getElementById('menuOverlay');
+  overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+}
+
+
+
+const revealBoxes = document.querySelectorAll('.revealBox');
+const boxObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    } else {
+      entry.target.style.opacity = '0';
+      entry.target.style.transform = 'translateY(60px)';
+    }
+  });
+}, { threshold: 0.2 });
+
+revealBoxes.forEach(box => boxObserver.observe(box));
+
+
+
+
+
+
+
+
+const aballs = [
+  { id: 'aball1', size: 50 },
+  { id: 'aball2', size: 110 },
+  { id: 'aball3', size: 35 },
+  { id: 'aball4', size: 90 },
+  { id: 'aball5', size: 70 },
+  { id: 'aball6', size: 120 },
+];
+
+aballs.forEach(s => {
+  const img = document.getElementById(s.id);
+  let x = Math.random() * window.innerWidth;
+  let y = Math.random() * window.innerHeight;
+  let vx = (Math.random() - 0.5) * 1.5;
+  let vy = (Math.random() - 0.5) * 1.5;
+
+  function wander() {
+    x += vx;
+    y += vy;
+    vx += (Math.random() - 0.5) * 0.1;
+    vy += (Math.random() - 0.5) * 0.1;
+    vx = Math.max(-2, Math.min(2, vx));
+    vy = Math.max(-2, Math.min(2, vy));
+    if (x < 0 || x > window.innerWidth - s.size) vx *= -1;
+    if (y < 0 || y > window.innerHeight - s.size) vy *= -1;
+    img.style.left = x + 'px';
+    img.style.top = y + 'px';
+    requestAnimationFrame(wander);
+  }
+  wander();
+});
+
+
+
+supabaseClient.auth.getSession().then(({ data: { session } }) => {
+  if (session) {
+    // Replace login link with logout button in side menu
+    const loginLink = document.querySelector('a[href="login.html"]');
+    if (loginLink) {
+      loginLink.textContent = 'LOGOUT';
+      loginLink.href = '#';
+      loginLink.onclick = async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = 'login.html';
+      };
+    }
+  }
+});
+
+
+
+</script>
+
+</body>
+</html>

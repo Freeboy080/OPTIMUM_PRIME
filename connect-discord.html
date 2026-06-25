@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Discord — Optimum Prime</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+
+
+ body {
+    min-height: 100vh;
+    /* Layered background: Image first, then your existing gradient */                                                                              background-image: url('background3.png'), radial-gradient(ellipse at top left, #2a2a3d 0%, #1a1a2e 40%, #0d0d1a 100%);
+    background-size: cover, auto; /* Image covers, gradient stays standard */
+    background-position: center bottom, center;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: fixed, fixed;
+    background-size: contain;
+
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image:
+        linear-gradient(rgba(192,192,192,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192,192,192,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(-100px); opacity: 0; }
+    }
+    .particle {
+      position: fixed;
+      width: 3px; height: 3px;
+      background: #C0C0C0;
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Particles -->
+<div class="particle" style="left: 10%; animation-duration: 12s; animation-delay: 0s;"></div>
+<div class="particle" style="left: 25%; animation-duration: 18s; animation-delay: 3s; width:2px; height:2px;"></div>
+<div class="particle" style="left: 50%; animation-duration: 14s; animation-delay: 6s;"></div>
+<div class="particle" style="left: 70%; animation-duration: 20s; animation-delay: 1s; width:4px; height:4px;"></div>
+<div class="particle" style="left: 88%; animation-duration: 16s; animation-delay: 4s;"></div>
+
+<!-- Logo -->
+<div style="position: fixed; top: 20px; left: 20px; z-index: 999;">
+  <img src="optimumLogo2.png" style="width: 120px; object-fit: contain;">
+</div>
+
+<!-- Main content -->
+<div style="position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px;">
+
+  <div style="background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(192,192,192,0.2); border-radius: 20px; padding: 40px 30px; width: 90%; max-width: 450px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); text-align: center;">
+
+    <!-- Logo -->
+    <div style="margin-bottom: 24px;">
+      <img src="optimumLogo.png" style="width: 150px; object-fit: contain;">
+    </div>
+
+    <!-- Discord icon -->
+    <div style="width: 80px; height: 80px; background: #5865F2; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px;">
+      <img src="discordLogo.webp" style="width: 45px; height: 45px;">
+    </div>
+
+    <!-- Title -->
+    <h2 style="font-family: 'Anton', sans-serif; font-size: 1.8em; letter-spacing: 3px; color: white; margin-bottom: 8px;">CONNECT DISCORD</h2>
+    <p style="font-family: 'Orbitron', sans-serif; font-size: 0.75em; color: rgba(192,192,192,0.6); letter-spacing: 2px; margin-bottom: 16px;">ONE LAST STEP</p>
+
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.9em; color: rgba(192,192,192,0.7); line-height: 1.7; margin-bottom: 30px;">Connect your Discord account to verify your identity and prevent impersonation. This allows us to pull your real Discord username and community roles.</p>
+
+    <!-- Connect button -->
+    <button onclick="connectDiscord()" style="width: 100%; padding: 14px; background: #5865F2; color: white; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-size: 0.9em; letter-spacing: 2px; font-weight: bold; cursor: pointer; margin-bottom: 16px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+      <img src="discordLogo.webp" style="width: 24px; height: 24px;">
+      CONNECT WITH DISCORD
+    </button>
+
+    <!-- Skip for now -->
+    <p style="font-family: 'Inter', sans-serif; font-size: 0.8em; color: rgba(192,192,192,0.4); cursor: pointer;" onclick="window.location.href='upload-profile.html'">Skip for now →</p>
+
+  </div>
+</div>
+
+<script>
+
+const SUPABASE_URL = 'https://hpjztfiijgkkbexpxxqz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhwanp0Zmlpamdra2JleHB4eHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NTA4ODUsImV4cCI6MjA5NzIyNjg4NX0.LbS4fFhnFWBg3U2dqV6eVERbX-GG4d0oPk40XKkMLSA';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function connectDiscord() {
+  supabaseClient.auth.signInWithOAuth({
+    provider: 'discord',
+    options: { redirectTo: 'http://localhost:8000/upload-profile.html' }
+  });
+}
+
+
+
+
+</script>
+
+</body>
+</html>

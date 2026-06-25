@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Profile Picture — Optimum Prime</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+ body {
+    min-height: 100vh;
+    /* Layered background: Image first, then your existing gradient */                                                                              background-image: url('background3.png'), radial-gradient(ellipse at top left, #2a2a3d 0%, #1a1a2e 40%, #0d0d1a 100%);
+    background-size: cover, auto; /* Image covers, gradient stays standard */
+    background-position: center bottom, center;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: fixed, fixed;
+    background-size: contain;
+
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image:
+        linear-gradient(rgba(192,192,192,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192,192,192,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: 0;
+      pointer-events: none;
+    }
+    @keyframes floatUp {
+      0% { transform: translateY(100vh); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(-100px); opacity: 0; }
+    }
+    .particle {
+      position: fixed;
+      width: 3px; height: 3px;
+      background: #C0C0C0;
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+    #previewImg {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #C0C0C0;
+      box-shadow: 0 0 0 3px #E8E8E8, 0 0 0 6px #A9A9A9;
+      display: none;
+      margin: 0 auto 20px;
+    }
+    #uploadLabel {
+      display: block;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 3px dashed rgba(192,192,192,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin: 0 auto 20px;
+      color: rgba(192,192,192,0.6);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7em;
+      letter-spacing: 1px;
+      text-align: center;
+      flex-direction: column;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Particles -->
+<div class="particle" style="left: 10%; animation-duration: 12s; animation-delay: 0s;"></div>
+<div class="particle" style="left: 25%; animation-duration: 18s; animation-delay: 3s; width:2px; height:2px;"></div>
+<div class="particle" style="left: 50%; animation-duration: 14s; animation-delay: 6s;"></div>
+<div class="particle" style="left: 70%; animation-duration: 20s; animation-delay: 1s; width:4px; height:4px;"></div>
+<div class="particle" style="left: 88%; animation-duration: 16s; animation-delay: 4s;"></div>
+
+<!-- Logo -->
+<div style="position: fixed; top: 20px; left: 20px; z-index: 999;">
+  <img src="optimumLogo2.png" style="width: 120px; object-fit: contain;">
+</div>
+
+<!-- Main content -->
+<div style="position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px;">
+
+  <div style="background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(192,192,192,0.2); border-radius: 20px; padding: 40px 30px; width: 90%; max-width: 450px; box-shadow: 0 8px 32px rgba(0,0,0,0.4); text-align: center;">
+
+    <div style="margin-bottom: 24px;">
+      <img src="optimumLogo.png" style="width: 150px; object-fit: contain;">
+    </div>
+
+    <h2 style="font-family: 'Anton', sans-serif; font-size: 1.8em; letter-spacing: 3px; color: white; margin-bottom: 8px;">PROFILE PICTURE</h2>
+    <p style="font-family: 'Orbitron', sans-serif; font-size: 0.75em; color: rgba(192,192,192,0.6); letter-spacing: 2px; margin-bottom: 30px;">ALMOST THERE</p>
+
+    <!-- Preview -->
+    <img id="previewImg" src="" alt="preview">
+
+    <!-- Upload area -->
+    <label id="uploadLabel" for="fileInput">
+      <span style="font-size: 2em;">+</span>
+      <span>TAP TO UPLOAD</span>
+    </label>
+    <input type="file" id="fileInput" accept="image/*" style="display:none;" onchange="previewImage(event)">
+
+    <!-- Upload button -->
+    <button onclick="uploadProfilePicture()" style="width: 100%; padding: 14px; background: white; color: #1a1a1a; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-size: 0.9em; letter-spacing: 2px; font-weight: bold; cursor: pointer; margin-bottom: 16px; display: none;" id="uploadBtn">SAVE & CONTINUE</button>
+
+    <!-- Skip -->
+    <p onclick="window.location.href='index.html'" style="font-family: 'Inter', sans-serif; font-size: 0.8em; color: rgba(192,192,192,0.4); cursor: pointer;">Skip for now →</p>
+
+    <!-- Error -->
+    <p id="uploadError" style="color: #ff4444; font-family: 'Inter', sans-serif; font-size: 0.85em; margin-top: 10px; display: none;"></p>
+
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  // Handle OAuth callback
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  
+  if (!session) {
+    // Try to get session from URL hash (OAuth redirect)
+    const { data, error } = await supabaseClient.auth.exchangeCodeForSession(window.location.href);
+    if (error || !data.session) {
+      window.location.href = 'login.html';
+      return;
+    }
+  }
+});
+
+
+
+
+const SUPABASE_URL = 'https://hpjztfiijgkkbexpxxqz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhwanp0Zmlpamdra2JleHB4eHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NTA4ODUsImV4cCI6MjA5NzIyNjg4NX0.LbS4fFhnFWBg3U2dqV6eVERbX-GG4d0oPk40XKkMLSA';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+function previewImage(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const preview = document.getElementById('previewImg');
+      const label = document.getElementById('uploadLabel');
+      const btn = document.getElementById('uploadBtn');
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+      label.style.display = 'none';
+      btn.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+
+async function uploadProfilePicture() {
+    const file = document.getElementById('fileInput').files[0];
+    if (!file) return;
+
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+
+    const fileName = session.user.id + '.' + file.name.split('.').pop();
+
+    const { error: uploadError } = await supabaseClient.storage
+      .from('avatars')
+      .upload(fileName, file, { upsert: true });
+
+    if (uploadError) {
+      document.getElementById('uploadError').textContent = uploadError.message;
+      document.getElementById('uploadError').style.display = 'block';
+      return;
+    }
+
+    const { data: urlData } = supabaseClient.storage
+      .from('avatars')
+      .getPublicUrl(fileName);
+
+    await supabaseClient.from('users').upsert({
+      id: session.user.id,
+      avatar_url: urlData.publicUrl
+    });
+
+    window.location.href = 'index.html';
+  }
+</script>
+
+</body>
+</html>

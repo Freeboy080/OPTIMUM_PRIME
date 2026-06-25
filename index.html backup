@@ -1,0 +1,1136 @@
+<HTML>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+    <title>UNDER CONSTRUCTION...</title>
+    <style>
+
+
+    body {
+  background: linear-gradient(180deg, #B0B4BE 0%, #E8EAF0 50%, #F5F5F5 85%, #1a1a1a 100%);
+  min-height: 100vh;
+}
+
+
+
+
+
+  .box {
+  background: linear-gradient(145deg, #ffffff, #E8EAF0);
+  border-radius: 16px;
+  padding: 20px;
+  width: 95%;
+  margin: 20px auto;
+  backdrop-filter: blur(10px);
+}
+
+
+
+
+     @keyframes ninjaFire {
+  0%, 100% { box-shadow: 0 0 10px 2px #9B30FF, 0 0 20px 5px #6A0DAD, 0 0 30px 8px #4B0082; }
+  50% { box-shadow: 0 0 20px 5px #6A0DAD, 0 0 40px 10px #4B0082, 0 0 50px 15px #2E0057; }
+}
+@keyframes samuraiFire {
+  0%, 100% { box-shadow: 0 0 10px 2px #FFB300, 0 0 20px 5px #FF6600, 0 0 30px 8px #FF2200; }
+  50% { box-shadow: 0 0 20px 5px #FF6600, 0 0 40px 10px #FF2200, 0 0 50px 15px #CC0000; }
+}
+@keyframes vikingFire {
+  0%, 100% { box-shadow: 0 0 10px 2px #00BFFF, 0 0 20px 5px #005F8A, 0 0 30px 8px #001F3F; }
+  50% { box-shadow: 0 0 20px 5px #005F8A, 0 0 40px 10px #001F3F, 0 0 50px 15px #000D1A; }
+}
+@keyframes spartanFire {
+  0%, 100% { box-shadow: 0 0 10px 2px #FFD700, 0 0 20px 5px #FF8C00, 0 0 30px 8px #FF6000; }
+  50% { box-shadow: 0 0 20px 5px #FF8C00, 0 0 40px 10px #FF6000, 0 0 50px 15px #CC4400; }
+}
+
+
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+
+
+
+
+
+.box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+background: linear-gradient(
+  to bottom,
+  rgba(0,0,0,0.15) 0%,
+  transparent 20%,
+  transparent 80%,
+  rgba(0,0,0,0.15) 100%
+);
+  z-index: 2;
+  pointer-events: none;
+}
+
+
+
+@keyframes floatSpark {
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-150px); opacity: 0; }
+}
+.spark {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: orange;
+  animation: floatSpark 1.5s ease-out forwards;
+  z-index: 3;
+  pointer-events: none;
+}
+
+
+
+
+
+.warCard {
+  width: 140px;
+  height: 180px;
+  background: #1a1a1a;
+  border: 2px solid;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  animation: cardPulse 2s infinite;
+  transition: transform 0.2s;
+}
+.warCard:active {
+  transform: scale(0.95);
+}
+.warCardInner {
+  text-align: center;
+  padding: 10px;
+}
+.warCardName {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin: 0;
+  letter-spacing: 2px;
+}
+.warCardSub {
+  font-size: 0.8em;
+  margin-top: 8px;
+}
+@keyframes cardPulse {
+  0%, 100% { box-shadow: 0 0 10px currentColor; }
+  50% { box-shadow: 0 0 25px currentColor; }
+}
+
+
+
+
+
+.stoneCard {
+  width: 280px;
+  height: 150px;
+  background: white;
+  border: 2px solid black;
+  border-radius: 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  animation: stonePulse 2s infinite;
+  transition: transform 0.2s;
+}
+.stoneCard:active {
+  transform: scale(0.95);
+}
+.stoneCrack {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 2px;
+  height: 100%;
+  background: var(--glowColor);
+  opacity: 0.6;
+  clip-path: polygon(40% 0%, 60% 0%, 55% 30%, 70% 30%, 45% 60%, 60% 60%, 30% 100%, 50% 100%);
+}
+.stoneName {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: black;
+  letter-spacing: 3px;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+}
+.stoneClass {
+  font-size: 0.8em;
+  color: #888;
+  margin-top: 8px;
+  letter-spacing: 1px;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes stonePulse {
+  0%, 100% { box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+  50% { box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
+}
+
+
+
+
+
+#wanderSticker {
+  position: fixed;
+  width: 80px;
+  z-index: 999;
+  pointer-events: none;
+}
+
+
+
+#poseImg {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  display: block;
+  margin: 0;
+}
+
+
+
+
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+
+
+#characterImg {
+  filter: drop-shadow(0px 20px 15px rgba(0,0,0,0.3));
+}
+
+
+#creatorCard {
+  font-family: 'Orbitron', sans-serif;
+}
+
+#optimumCard {
+  font-family: 'Orbitron', sans-serif;
+}
+
+
+
+@keyframes fadeInLayer {
+  from { opacity: 0; }
+  to { opacity: 0.4; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(80px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+@keyframes lineSlide {
+  from { width: 0%; }
+  to { width: 80%; }
+}
+
+
+
+#ecosystemLine {
+  height: 2px;
+  background: linear-gradient(to right, transparent, #1a1a1a, transparent);
+  width: 0%;
+  margin: 16px auto 0;
+  transition: width 1.5s ease;
+}
+
+
+
+
+@keyframes flowDown {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100px; }
+}
+.connectionLine {
+  width: 2px;
+  height: 80px;
+  background: repeating-linear-gradient(
+    to bottom,
+    #1a1a1a 0px,
+    #1a1a1a 10px,
+    transparent 10px,
+    transparent 20px
+  );
+  background-size: 2px 20px;
+  animation: flowDown 1s linear infinite;
+  margin: 0 auto;
+}
+
+
+
+
+
+#popupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+background: rgba(0,0,0,0.5);
+backdrop-filter: blur(10px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0; 
+  overflow-y: auto;
+
+}
+
+
+#popupBox {
+  background-image: url('selectionbackground.png');
+background-size: cover;
+background-position: center;
+  border-radius: 20px;
+  padding: 50px 30px;
+  width: 95%;
+  max-width: 900px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+  margin: 20px auto;
+}
+
+
+
+
+@keyframes popupAppear {
+  0% { opacity: 0; transform: scale(0.8) translateY(30px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+
+
+#popupBox {
+  opacity: 0;
+  animation: popupAppear 0.6s ease forwards;
+  animation-delay: 1s;
+}
+
+
+
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+
+#getStartedBtn {
+  animation: breathe 1.5s ease-in-out infinite;
+}
+
+
+
+
+
+
+#sideMenu {
+  position: fixed;
+  top: 0;
+  right: -350px;
+  width: 300px;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(15px);
+  z-index: 99999;
+  transition: right 0.4s ease;
+  padding: 80px 30px 30px;
+}
+#sideMenu.open {
+  right: 0;
+}
+#menuOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 99998;
+  display: none;
+}
+#topNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.2);
+  backdrop-filter: blur(15px);
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 20px;
+  box-sizing: border-box;
+}
+.hamburger {
+  font-size: 1.8em;
+  cursor: pointer;
+  color: white;
+  background: none;
+  border: none;
+}
+
+
+.menuLink {
+  display: block;
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9em;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+.menuLink:hover { color: #FFD700; }
+
+
+
+
+
+
+    </style>
+
+  </head>
+  <body>
+
+
+<div id="menuOverlay" onclick="toggleMenu()"></div>
+
+
+<!-- Top Nav -->
+<div id="topNav">
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <img src="optimum-primeLogo.png" alt="Logo" style="height: 30px; width: auto;">
+    <h3 style="margin: 0; font-family: 'Anton', sans-serif; letter-spacing: 2px; font-size: 1.2em; color: white;">OPTIMUM PRIME</h3>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <span style="background: #333; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75em; letter-spacing: 2px;">BETA</span>
+    <button class="hamburger" onclick="toggleMenu()">&#9776;</button>
+  </div>
+</div>
+</div>
+
+<!-- Side Menu -->
+<div id="sideMenu">
+  <button onclick="toggleMenu()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 1.5em; cursor: pointer;">&times;</button>
+  <h3 style="font-family: 'Orbitron', sans-serif; color: white; letter-spacing: 2px; margin-bottom: 30px;">MENU</h3>
+  <a href="index.html" class="menuLink">HOME</a>
+  <a href="dashboard.html" class="menuLink">DASHBOARD</a>
+  <a href="battlefield.html" class="menuLink">BATTLE FIELD</a>
+  <a href="sitedeveloper.html" class="menuLink">SITE DEVELOPER</a>
+  <a href="about.html" class="menuLink">ABOUT</a>
+  <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+    <a href="login.html" style="display: block; background: white; color: black; font-family: 'Orbitron', sans-serif; font-size: 0.9em; letter-spacing: 2px; padding: 12px 20px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold;">LOGIN</a>
+  </div>
+</div>
+
+
+</div>
+
+
+
+<div id="popupOverlay">
+  <div id="popupBox">
+    <h1 style="font-family: 'Anton', sans-serif; font-size: 2.5em; margin: 0 0 10px; letter-spacing: 3px; color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.8);">KNOW YOUR WORTH!</h1>
+    <p style="color: white; font-size: 1em; margin: 0 auto 20px; max-width: 400px; text-shadow: 1px 1px 4px rgba(0,0,0,0.8);">Choose your warrior class and claim your identity on the battlefield.</p>
+    <img src="character0.png" style="width: 200px; margin: 10px auto; display: block;">
+    <p style="font-family: 'Orbitron', sans-serif; font-size: 0.85em; color: white; letter-spacing: 2px; margin-bottom: 20px; text-shadow: 1px 1px 4px rgba(0,0,0,0.8);">SELECT YOUR CLASS</p>
+    <div style="display: flex; flex-direction: row; gap: 20px; justify-content: center;">
+      <div onclick="selectCharacter('character1.png', 'background1.mp4', 'ninja', 'character1-1.png', 'NINJA', 'background1-1.png', 'page1.png')" class="stoneCard" style="--glowColor: #9B30FF;">
+        <div class="warCardInner">
+          <p class="stoneName">NINJA</p>
+          <p class="stoneClass">Shadow Class</p>
+        </div>
+      </div>
+      <div onclick="selectCharacter('character2.png', 'background2.mp4', 'samurai', 'character2-1.png', 'SAMURAI', 'background2-2.png', 'page2.png')" class="stoneCard" style="--glowColor: #FF2200;">
+        <div class="warCardInner">
+          <p class="stoneName">SAMURAI</p>
+          <p class="stoneClass">Honor Class</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+<div id="mainContent">
+<img id="pageLayerImg" src="" style="display:none; position:absolute; top:2500px; left:0; width:100%; z-index:0; pointer-events:none; opacity: 0.2;">
+
+<img id="wander1" src="optimumSticker1.png" style="position:fixed; width:50px; z-index:999; pointer-events:none;">
+<img id="wander2" src="optimumSticker1.png" style="position:fixed; width:300px; z-index:999; pointer-events:none;">
+<img id="wander3" src="optimumSticker1.png" style="position:fixed; width:40px; z-index:999; pointer-events:none;">
+<img id="wander4" src="optimumSticker1.png" style="position:fixed; width:120px; z-index:999; pointer-events:none;">
+<img id="wander5" src="optimumSticker1.png" style="position:fixed; width:70px; z-index:999; pointer-events:none;">
+
+
+
+
+
+
+<div style="margin: 100px;"></div>
+
+
+
+
+    <div style="text-align: center; padding: 50px 20px 30px;">
+  <h1 style="font-family: 'Anton', sans-serif; font-size: 3em; margin: 0 0 10px; letter-spacing: 3px;">ENTER THE BATTLEFIELD</h1>
+  <p style="color: #6B7280; font-size: 1.1em; margin: 0 auto; max-width: 500px;">You've answered the call. Now prove your worth.</p>
+</div>
+
+
+
+
+
+
+<div style="height: 2px; background: linear-gradient(to right, transparent, black, transparent); width: 80%; margin: 20px auto;"></div>
+
+
+   <div style="margin: 30px;"></div>
+
+
+
+
+
+<div id="dashboardBox" class="box" style="display: none; flex-direction: column; border: 10px solid; border-image: linear-gradient(145deg, #1a1a1a, #555555, #1a1a1a, #555555, #1a1a1a) 1; box-shadow: 0 8px 32px rgba(0,0,0,0.15); position: relative; overflow: hidden; min-height: 400px;">
+<video id="fireVideo" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index:0;" playsinline onended="this.style.display='none'">
+  <source id="fireSource" src="" type="video/mp4">
+</video>
+<div style="position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.2); z-index:0; pointer-events:none;"></div>
+
+
+
+
+
+<div id="dashContent" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex: 1; position: relative; z-index: 1;">
+
+  <div style="position: absolute; left: -20; top: 10; bottom: -70; width: 290px; background: rgba(0, 0, 0, 0.7); z-index: 0;">
+  <p style="color: white;">Your dashboard:</p>
+<div style="margin: 300px;"></div>
+<div id="dashboardName" style="background: linear-gradient(135deg, #FFD700, #FDB931, #DAA520, #B8860B); -webkit-background-clip: text; font-family: 'Orbitron', sans-serif; display: flex; justify-content: center; color: white;">Name: -</div>
+<div style="margin: 20px"></div>
+<div id="discordRole" style="background: linear-gradient(135deg, #FFD700, #FDB931, #DAA520, #B8860B); -webkit-background-clip: text; font-family: 'Orbitron', sans-serif; display: flex; justify-content: center; color: white;">Role: -</div>
+
+
+
+  </div>
+
+  <div style="display: flex; flex-direction: column; align-items: center; gap: 16px; position: relative; z-index: 2;">
+    <div style="width: 200px; height: 200px; border-radius: 50%; border: 20px solid #E6BE8A; display: flex; align-items: center; justify-content: center; background: #d0d0d0;">
+      <div id="dashboardCircle" style="width: 190px; height: 190px; border-radius: 50%; background: white; overflow: hidden;">
+      </div>
+    </div>
+    <div style="margin: 70px;"></div>
+  </div>
+
+  <img id="characterImg" src="" alt="" width="400" style="display:none; margin-top: auto;">
+</div>
+
+
+  <div style="margin-top: 50px; text-align: center;"></div>
+</div>
+
+
+<div style=" margin: 80;"></div>
+
+
+<div style=" font-family: 'Orbitron', sans-serif;  background: rgba(0,0,0,0.8); padding: 25px 15px; border-radius: 10px; border: 4px solid; border-image-source: linear-gradient(45deg, #D4AF37, #C0C0C0, #D4AF37); border-image-slice: 1; box-shadow: 0 0 15px rgba(212, 175, 55, 0.3), inset 0 0 10px rgba(255, 255, 255, 0.1);">
+<h2 id="userName" style="background: linear-gradient(to bottom, #F9F295 0%, #D4AF37 50%, #996515 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 6px; font-weight: bold;">NAME:</h2>
+<h3 id="userRank" style="color: silver; margin: 0;">Rank: —</h3>
+</div>
+
+
+
+  <div style="margin: 30px;"></div>
+
+<!-- USER BADGES -->
+
+<div style="background: white; border-radius: 16px; width: 95%; margin: 20px auto; padding: 30px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 3px solid; border-image: linear-gradient(145deg, #FFD700, #FFF8DC, #DAA520, #FFF8DC, #FFD700) 1; position: relative; overflow: hidden;">
+  
+  <!-- Shiny overlay effect -->
+  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, transparent 50%, rgba(255,215,0,0.1) 100%); pointer-events: none; z-index: 0;"></div>
+
+  <!-- Content -->
+  <div style="position: relative; z-index: 1;">
+    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 1.5em; letter-spacing: 3px; color: #1a1a1a; margin: 0 0 20px; text-align: center;">ACHIEVEMENTS</h2>
+    <div style="height: 1px; background: linear-gradient(to right, transparent, #DAA520, transparent); margin-bottom: 20px;"></div>
+    <!-- Badges will go here -->
+    <p style="text-align: center; color: #6B7280; font-family: 'Orbitron', sans-serif; font-size: 0.85em; letter-spacing: 2px;">COMING SOON...</p>
+  </div>
+
+</div>
+
+
+
+  <div style="margin: 100px;"></div>
+
+<div style="text-align: center; margin: 20px auto;">
+  <a href="dashboard.html" style="text-decoration: none;">
+    <div style="display: inline-flex; align-items: center; justify-content: center; background: black; color: white; padding: 35px 40px; border-radius: 40px; font-family: 'Orbitron', sans-serif; font-size: 1.5em; letter-spacing: 3px; cursor: pointer;">
+      VIEW DASHBOARD
+    </div>
+  </a>
+</div>
+
+
+
+  <div style="margin: 500px;"></div>
+
+
+
+<div style="height: 2px; background: linear-gradient(to right, transparent, black, transparent); width: 80%; margin: 20px auto;"></div>
+
+
+
+<div style="text-align: center; margin-bottom: 20px;">
+  <img src="optimumlogo1.png" width="400">
+</div>
+
+
+
+<div style="margin-top: 60px; text-align: center; padding: 20px;">
+
+  <!-- Big quote -->
+  <h2 style="font-family: 'Inter', sans-serif; font-size: 3.5em; font-weight: 600; letter-spacing: 2px; color: #1a1a1a; margin-bottom: 10px;">"Data movement sets the ceiling.</h2>
+  <h2 style="font-family: 'Inter', sans-serif; font-size: 3.5em; font-weight: 600; letter-spacing: 2px; color: #1a1a1a; margin-bottom: 30px;">Optimum raises it."</h2>
+  <p style="font-size: 1.3em; color: #6B7280; max-width: 600px; margin: 0 auto 50px; line-height: 1.7;">Optimum is the Universal Data Acceleration Network that makes blockchains faster, more efficient, and ready for a global digital economy.</p>
+
+  <!-- Stat cards stacked -->
+  <div class="revealCard" style="background: white; border-radius: 16px; width: 85%; height: 350px; margin: 0 auto 200px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); opacity: 0; transform: translateY(60px); transition: all 0.8s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <h3 style="font-size: 3.5em; margin: 0 0 10px; color: #1a1a1a;">10x</h3>
+    <p style="margin: 0; color: #6B7280; font-size: 1.4em;">Faster Data Transfer</p>
+</div>
+
+<div class="revealCard" style="background: white; border-radius: 16px; width: 85%; height: 350px; margin: 0 auto 200px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); opacity: 0; transform: translateY(60px); transition: all 0.8s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <h3 style="font-size: 3.5em; margin: 0 0 10px; color: #1a1a1a;">RLNC</h3>
+    <p style="margin: 0; color: #6B7280; font-size: 1.4em;">Zero Packet Loss Technology</p>
+</div>
+
+<div class="revealCard" style="background: white; border-radius: 16px; width: 85%; height: 350px; margin: 0 auto 200px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); opacity: 0; transform: translateY(60px); transition: all 0.8s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <h3 style="font-size: 3.5em; margin: 0 0 10px; color: #1a1a1a;">DeRAM</h3>
+    <p style="margin: 0; color: #6B7280; font-size: 1.4em;">Decentralized Memory Layer</p>
+</div>
+
+<div class="revealCard" style="background: white; border-radius: 16px; width: 85%; height: 350px; margin: 0 auto 200px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); opacity: 0; transform: translateY(60px); transition: all 0.8s ease; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <h3 style="font-size: 3.5em; margin: 0 0 10px; color: #1a1a1a;">ETH</h3>
+    <p style="margin: 0; color: #6B7280; font-size: 1.4em;">Built for Ethereum Validators</p>
+</div>
+
+
+
+
+</div>
+
+
+
+
+<div style="margin: 300px;"></div>
+
+<div style="height: 2px; background: linear-gradient(to right, transparent, black, transparent); width: 90%; margin: 20px auto;"></div>
+
+
+<div style="text-align: center; margin: 60px auto;">
+  <a href="login.html" style="text-decoration: none;">
+    <div id="getStartedBtn" class="stoneCard" style="--glowColor: #1a1a1a; display: inline-flex; align-items: center; justify-content: center; width: 400px; height: 150px;">
+      <div style="text-align: center;">
+        <p class="stoneName" style="color: #1a1a1a; margin: 0;">REVEAL THE SECRETS</p>
+        <p class="stoneClass" style="color: #888; margin-top: 6px;">Source for more power</p>
+      </div>
+    </div>
+  </a>
+</div>
+
+
+
+
+<div style="height: 8px; background: linear-gradient(to right, transparent, black, transparent); width: 95%; margin: 50px auto;"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <div style="margin: 1200px;"></div>
+
+
+<div id="ecosystemLine" style="text-align: center; margin: 60px auto 150px;">
+  <h2 style="font-family: 'Orbitron', sans-serif; font-size: 3em; letter-spacing: 4px; color: #1a1a1a;">BEHIND THE BUILD</h2>
+  <div style="height: 1px; background: linear-gradient(to right, transparent, rgba(0,0,0,0.4), transparent); width: 80%; margin: 16px auto 0;"></div>
+</div>
+
+
+<div id="poseSection" style="visibility:hidden; text-align: left; margin-top: 60px; position: relative; min-height: 600px; opacity:0;">
+<img id="poseImg" src="" style="opacity:0;">
+
+
+
+
+
+<!-- Creator Card -->
+<div id="creatorCard" style="position: absolute; top: 100px; left: 50%; transform: translateX(-50%) translateY(60px); opacity: 0; transition: opacity 0.8s ease, transform 0.8s ease; background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); border-radius: 16px; padding: 40px; width: 80%; max-width: 800px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.1); opacity: 0.9;">
+  <img src="MyProfile.jpg" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid black; margin-bottom: 16px;">
+  <p style="font-size: 0.85em; letter-spacing: 3px; color: #6B7280; margin: 0 0 6px; text-transform: uppercase;">Site Developer</p>
+  <h3 style="font-size: 1.8em; font-weight: bold; margin: 0 0 10px; font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #1a1a1a;">FREEBOY</h3>
+  <p style="font-size: 0.95em; color: #6B7280; line-height: 1.6; margin: 0 0 20px;">Web3 Developer &middot; Solidity | HTML | CSS | JS &middot; Building on-chain and open to collaborations</p>
+  <a href="https://x.com/FreeboyShed" target="_blank" style="display: inline-block; background: black; color: white; padding: 14px 40px; border-radius: 20px; font-size: 1em; text-decoration: none; font-weight: bold; letter-spacing: 1px;">Follow on X</a>
+</div>
+
+
+
+
+
+<!-- Optimum Group -->
+<div id="optimumGroup" style="position: absolute; top: 800px; left: 50%; transform: translateX(-50%) translateY(60px); opacity: 0; transition: opacity 0.8s ease, transform 0.8s ease; width: 90%; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); border-radius: 20px; padding: 80px 30px 20px; min-height: 1200px;">
+
+
+<!-- Optimum Card -->
+
+<div id="optimumCard" style="background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); border-radius: 16px; padding: 40px; width: 90%; margin: 0 auto 20px; text-align: center; box-shadow: 0 8px 32px rgba(0,0,0,0.1); opacity: 0.9;">
+  <img src="Optimum_image.jpg" style="width: 120px; height: 120px; border-radius: 50%; object-fit: cover; border: 3px solid black; margin-bottom: 16px;">
+  <p style="font-size: 0.85em; letter-spacing: 3px; color: #6B7280; margin: 0 0 6px; text-transform: uppercase;">Official Account</p>
+  <h3 style="font-size: 1.8em; font-weight: bold; margin: 0 0 10px; font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #1a1a1a;">OPTIMUM</h3>
+  <p style="font-size: 0.95em; color: #6B7280; line-height: 1.6; margin: 0 0 20px;">The Universal Data Acceleration Network &middot; Making blockchains faster, more efficient &amp; ready for a global digital economy &middot; Powered by RLNC &amp; DeRAM</p>
+  <a href="https://x.com/get_optimum" target="_blank" style="display: inline-block; background: black; color: white; padding: 14px 40px; border-radius: 20px; font-size: 1em; text-decoration: none; font-weight: bold; letter-spacing: 1px;">Follow on X</a>
+</div>
+<!-- Co-Founders Section -->
+<div style="width: 90%; text-align: center; margin-top: 60px; margin-left: auto; margin-right: auto;">
+
+  <!-- Kent Lin - First, bigger -->
+  <div style="background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); border-radius: 16px; padding: 30px; width: 90%; max-width: 700px; margin: 0 auto 20px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); font-family: 'Orbitron', sans-serif;">
+    <img src="kent.jpg" style="width: 100px; height: 100px; border-radius: 50%; object-fit: cover; border: 3px solid black; margin-bottom: 12px;">
+    <p style="font-size: 0.75em; letter-spacing: 3px; color: #6B7280; margin: 0 0 6px; text-transform: uppercase;">Co-Founder</p>
+    <h3 style="font-size: 1.4em; font-weight: bold; margin: 0 0 10px; color: #1a1a1a;">Kent Lin</h3>
+    <p style="font-size: 0.8em; color: #6B7280; line-height: 1.6; margin: 0;">Kent Lin drives Optimum's adoption and ecosystem growth by overseeing business development, tokenomics, and fundraising efforts. He is a former Partner at GSRV, a $4B VC, and a Harvard MBA dropout who also served as President of the Harvard Blockchain Club. Additionally, he is the founder of the McKinsey Crypto DAO, a community of over 200 McKinsey alumni active in Web3.</p>
+  </div>
+
+  <!-- Muriel and Kishori - side by side -->
+  <div style="display: flex; gap: 20px; justify-content: center;">
+
+    <!-- Prof. Muriel Médard -->
+    <div style="background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); border-radius: 16px; padding: 20px; width: 45%; box-shadow: 0 8px 32px rgba(0,0,0,0.1); font-family: 'Orbitron', sans-serif;">
+      <img src="muriel.jpg" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid black; margin-bottom: 10px;">
+      <p style="font-size: 0.65em; letter-spacing: 2px; color: #6B7280; margin: 0 0 4px; text-transform: uppercase;">Co-Founder</p>
+      <h3 style="font-size: 1em; font-weight: bold; margin: 0 0 8px; color: #1a1a1a;">Prof. Muriel Médard</h3>
+      <p style="font-size: 0.7em; color: #6B7280; line-height: 1.5; margin: 0;">Prof. Muriel Médard is Optimum's CEO and the NEC Chair at MIT EECS, ranked #1 globally in Network Coding and co-inventor of RLNC. Her accolades include membership in the US National Academy of Engineering (2020), US National Academy of Inventors (2018), leading Network Coding &amp; Reliable Communications, and tenure as former IEEE Information Theory Society President.</p>
+    </div>
+
+    <!-- Dr. Kishori Konwar -->
+    <div style="background: rgba(255,255,255,0.85); backdrop-filter: blur(10px); border-radius: 16px; padding: 20px; width: 45%; box-shadow: 0 8px 32px rgba(0,0,0,0.1); font-family: 'Orbitron', sans-serif;">
+      <img src="kishori.jpg" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid black; margin-bottom: 10px;">
+      <p style="font-size: 0.65em; letter-spacing: 2px; color: #6B7280; margin: 0 0 4px; text-transform: uppercase;">Co-Founder</p>
+      <h3 style="font-size: 1em; font-weight: bold; margin: 0 0 8px; color: #1a1a1a;">Dr. Kishori Konwar</h3>
+      <p style="font-size: 0.7em; color: #6B7280; line-height: 1.5; margin: 0;">Dr. Kishori Konwar brings deep expertise in distributed systems, coding theory, and AI to Optimum. He is a former Senior Engineer and Scientist at Meta, completed his Postdoctoral fellowship in Network Coding at MIT, and has experience as an Ex-Quant at Goldman Sachs.</p>
+    </div>
+
+  </div>
+
+
+</div>
+
+</div>
+
+
+
+
+
+
+</div>
+ <div style="margin: 1500px;"></div>
+
+
+
+
+
+<div style="margin-top: 80px;">
+  <!-- First construction stripe -->
+  <div style="background: repeating-linear-gradient(
+    -45deg,
+    #FFD700,
+    #FFD700 50px,
+    #1a1a1a 50px,
+    #1a1a1a 100px
+  ); padding: 30px 20px; text-align: center;">
+<h2 style="font-family: 'Orbitron', sans-serif; font-size: 2em; font-weight: 900; color: white; letter-spacing: 4px; margin: 0;">MORE UPDATES SOON</h2>
+  </div>
+
+  <!-- Gap between stripes -->
+  <div style="background: #1a1a1a; padding: 16px; text-align: center;">
+    <p style="font-family: 'Orbitron', sans-serif; font-size: 0.85em; color: #FFD700; letter-spacing: 3px; margin: 0;">UNDER CONSTRUCTION</p>
+  </div>
+
+  <!-- Second construction stripe -->
+  <div style="background: repeating-linear-gradient(
+    -45deg,
+    #FFD700,
+    #FFD700 80px,
+    #1a1a1a 80px,
+    #1a1a1a 160px
+  ); padding: 30px 20px; text-align: center;">
+<h2 style="font-family: 'Orbitron', sans-serif; font-size: 2em; font-weight: 900; color: white; letter-spacing: 4px; margin: 0;">MORE UPDATES SOON</h2>
+  </div>
+</div>
+
+
+  <script>
+const SUPABASE_URL = 'https://hpjztfiijgkkbexpxxqz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhwanp0Zmlpamdra2JleHB4eHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NTA4ODUsImV4cCI6MjA5NzIyNjg4NX0.LbS4fFhnFWBg3U2dqV6eVERbX-GG4d0oPk40XKkMLSA';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+
+function toggleMenu() {
+    const sideMenu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('menuOverlay');
+    sideMenu.classList.toggle('open');
+    overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+  }
+
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+    if (event === 'SIGNED_OUT' || !session) {
+      window.location.href = 'login.html';
+    }
+  });
+
+  const { data: userData, error: userError } = await supabaseClient
+    .from('users')
+    .select('display_name, discord_username, avatar_url, character')
+    .eq('id', session.user.id)
+    .single();
+
+  if (userError || !userData || !userData.character) {
+    document.getElementById('popupOverlay').style.display = 'flex';
+    document.getElementById('popupOverlay').style.opacity = '1';
+    document.getElementById('popupOverlay').style.pointerEvents = 'all';
+    document.getElementById('mainContent').style.pointerEvents = 'none';
+  } else {
+    document.getElementById('popupOverlay').style.display = 'none';
+    const charMap = {
+      ninja: ['character1.png', 'background1.mp4', ['#9B30FF','#6A0DAD','#ffffff'], 'character1-1.png', 'NINJA', 'background1-1.png', 'page1.png'],
+      samurai: ['character2.png', 'background2.mp4', ['#FF2200','#FF6600','#FFB300'], 'character2-1.png', 'SAMURAI', 'background2-2.png', 'page2.png']
+    };
+    const c = charMap[userData.character];
+    if (c) {
+      window._savedChar = c;
+      document.getElementById('popupOverlay').style.display = 'flex';
+      document.getElementById('popupOverlay').style.opacity = '1';
+      document.getElementById('popupOverlay').style.pointerEvents = 'all';
+      document.getElementById('mainContent').style.pointerEvents = 'none';
+      document.getElementById('popupBox').innerHTML = `
+        <h2 style="font-family:'Anton',sans-serif; color:white; letter-spacing:3px; margin-bottom:20px;">WELCOME BACK</h2>
+        <p style="font-family:'Orbitron',sans-serif; color:rgba(255,255,255,0.7); font-size:0.85em; letter-spacing:2px; margin-bottom:30px;">TAP TO ENTER THE BATTLEFIELD</p>
+        <button onclick="document.getElementById('popupOverlay').style.display='none'; document.getElementById('mainContent').style.pointerEvents='all'; changeCharacter(...window._savedChar)" style="background:white; color:black; border:none; padding:16px 40px; font-family:'Orbitron',sans-serif; font-size:1em; letter-spacing:2px; border-radius:8px; cursor:pointer;">ENTER</button>
+      `;
+    }
+  }
+
+
+if (userData) {
+  // Display name
+  document.getElementById('userName').textContent = 'Name: ' + (userData.display_name || session.user.user_metadata.display_name || '-');
+  document.getElementById('userRank').textContent = 'Rank: -';
+
+  // Dashboard name and discord role
+  document.getElementById('dashboardName').textContent = 'Name: ' + (userData.display_name || '-');
+  document.getElementById('discordRole').textContent = 'Role: ' + (userData.discord_role || '-');
+
+  // Avatar
+  if (userData.avatar_url) {
+    const avatarDiv = document.getElementById('dashboardCircle');
+    if (avatarDiv) {
+      avatarDiv.innerHTML = `<img src="${userData.avatar_url}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+    }
+  }
+} 
+
+
+
+
+  supabaseClient.auth.getSession().then(({ data: { session } }) => {
+    if (session) {
+      const loginLink = document.querySelector('a[href="login.html"]');
+      if (loginLink) {
+        loginLink.textContent = 'LOGOUT';
+        loginLink.href = '#';
+        loginLink.onclick = async () => {
+          await supabaseClient.auth.signOut();
+          window.location.href = 'login.html';
+        };
+      }
+    }
+  });
+
+});
+
+document.getElementById('popupBox').style.backgroundImage = 'url(selectionbackground.png?v=' + new Date().getTime() + ')';
+
+window.onerror = function(msg, src, line) { alert('Error: ' + msg + ' line ' + line); }
+
+let currentCharacter = '';
+
+function changeCharacter(imageSrc, videoSrc, sparkColors, poseImgSrc, poseName, bgImg, pageLayerSrc) {
+  if (currentCharacter === imageSrc) return;
+  currentCharacter = imageSrc;
+
+  const img = document.getElementById('characterImg');
+  const video = document.getElementById('fireVideo');
+  const source = document.getElementById('fireSource');
+  const content = document.getElementById('dashContent');
+
+  img.style.display = 'none';
+  img.style.animation = '';
+  content.style.animation = '';
+  content.style.opacity = '0';
+
+  source.src = videoSrc;
+  video.style.display = 'block';
+  video.load();
+  video.play();
+
+  document.getElementById('dashboardBox').style.display = 'flex';
+  document.getElementById('dashboardBox').style.minHeight = '600px';
+
+  video.onended = function() {
+    video.style.display = 'none';
+    document.getElementById('dashboardBox').style.minHeight = '600px';
+
+    const pageLayer = document.getElementById('pageLayerImg');
+    pageLayer.src = pageLayerSrc + '?v=' + new Date().getTime();
+    pageLayer.style.display = 'block';
+    pageLayer.style.animation = 'fadeInLayer 1.5s ease forwards';
+    pageLayer.style.opacity = '0.4';
+
+    createSparks(sparkColors);
+    img.src = imageSrc + '?v=' + new Date().getTime();
+    img.style.display = 'block';
+    img.style.animation = 'fadeIn 1.5s ease forwards';
+    content.style.display = 'flex';
+    content.style.animation = 'fadeIn 1.5s ease forwards';
+
+    document.getElementById('dashboardBox').style.backgroundImage = 'url(' + bgImg + ')';
+    document.getElementById('dashboardBox').style.backgroundSize = 'cover';
+    document.getElementById('dashboardBox').style.backgroundPosition = 'center';
+
+    const poseSection = document.getElementById('poseSection');
+    const poseImg = document.getElementById('poseImg');
+
+    poseSection.style.visibility = 'visible';
+    poseSection.style.opacity = '0';
+    poseSection.style.transform = 'translateY(80px)';
+    poseSection.style.transition = 'opacity 1s ease, transform 1s ease';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        poseSection.style.opacity = '1';
+        poseSection.style.transform = 'translateY(0)';
+      });
+    });
+
+    poseImg.src = poseImgSrc + '?v=' + new Date().getTime();
+    poseImg.style.animation = 'fadeIn 1.5s ease forwards';
+    poseImg.style.opacity = '1';
+  }
+}
+
+function createSparks(colors) {
+  const box = document.querySelector('.box');
+  for (let i = 0; i < 40; i++) {
+    setTimeout(() => {
+      const spark = document.createElement('div');
+      spark.classList.add('spark');
+      spark.style.left = Math.random() * 100 + '%';
+      spark.style.bottom = Math.random() * 30 + '%';
+      spark.style.background = colors[Math.floor(Math.random() * colors.length)];
+      spark.style.width = Math.random() * 5 + 2 + 'px';
+      spark.style.height = spark.style.width;
+      box.appendChild(spark);
+      setTimeout(() => spark.remove(), 1500);
+    }, Math.random() * 1000);
+  }
+}
+
+const stickers = [
+  { id: 'wander1', size: 50 },
+  { id: 'wander2', size: 200 },
+  { id: 'wander3', size: 40 },
+  { id: 'wander4', size: 120 },
+  { id: 'wander5', size: 70 },
+];
+
+stickers.forEach(s => {
+  const img = document.getElementById(s.id);
+  let x = Math.random() * window.innerWidth;
+  let y = Math.random() * window.innerHeight;
+  let vx = (Math.random() - 0.5) * 1.5;
+  let vy = (Math.random() - 0.5) * 1.5;
+
+  function wander() {
+    x += vx;
+    y += vy;
+    vx += (Math.random() - 0.5) * 0.1;
+    vy += (Math.random() - 0.5) * 0.1;
+    vx = Math.max(-2, Math.min(2, vx));
+    vy = Math.max(-2, Math.min(2, vy));
+    if (x < 0 || x > window.innerWidth - s.size) vx *= -1;
+    if (y < 0 || y > window.innerHeight - s.size) vy *= -1;
+    img.style.left = x + 'px';
+    img.style.top = y + 'px';
+    requestAnimationFrame(wander);
+  }
+  wander();
+});
+
+
+
+
+
+
+
+
+
+
+const revealCards = document.querySelectorAll('.revealCard');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+      entry.target.style.transform = 'translateY(0)';
+    } else {
+      entry.target.style.opacity = '0';
+      entry.target.style.transform = 'translateY(60px)';
+    }
+  });
+}, { threshold: 0.2 });
+revealCards.forEach(card => observer.observe(card));
+
+const revealOnScroll = document.querySelectorAll('#creatorCard, #optimumGroup');
+window.addEventListener('scroll', () => {
+  revealOnScroll.forEach(el => {
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.9) {
+      el.style.opacity = '1';
+      el.style.transform = el.style.transform.replace('translateY(60px)', 'translateY(0)');
+    } else {
+      el.style.opacity = '0';
+      el.style.transform = el.style.transform.replace('translateY(0)', 'translateY(60px)');
+    }
+  });
+});
+
+const ecosystemLine = document.getElementById('ecosystemLine');
+const ecosystemObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      ecosystemLine.style.width = '80%';
+    } else {
+      ecosystemLine.style.width = '0%';
+    }
+  });
+}, { threshold: 0.5 });
+ecosystemObserver.observe(ecosystemLine);
+
+
+
+
+
+sync function selectCharacter(imageSrc, videoSrc, character, poseImgSrc, poseName, bgImg, pageLayerSrc) {
+  // 1. Get the current user
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  
+  if (session) {
+    // 2. Perform the update and WAIT for the result
+    const { data, error } = await supabaseClient
+      .from('users')
+      .upsert({
+        id: session.user.id,
+        character: character,
+        display_name: session.user.user_metadata.display_name
+      });
+
+    // 3. Log the error to your console if it fails
+    if (error) {
+      console.error("Supabase Save Error:", error);
+      alert("Save failed! Check your console.");
+      return; // Stop the function if save failed
+    }
+    console.log("Save successful:", data);
+  }
+
+  // 4. Proceed only if saving was successful
+  document.getElementById('popupOverlay').style.display = 'none';
+  document.getElementById('mainContent').style.pointerEvents = 'all';
+  
+}
+
+
+
+
+
+  </script>
+</body>
+
+
+
+
+
+
+
+
+
+
+</html>

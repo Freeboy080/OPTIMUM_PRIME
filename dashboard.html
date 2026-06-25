@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+
+
+
+
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(180deg, #B0B4BE 0%, #E8EAF0 50%, #F5F5F5 85%, #1a1a1a 100%);
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+    }
+    #topNav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(15px);
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      box-sizing: border-box;
+    }
+    #sideMenu {
+      position: fixed;
+      top: 0;
+      right: -350px;
+      width: 300px;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(15px);
+      z-index: 99999;
+      transition: right 0.4s ease;
+      padding: 80px 30px 30px;
+    }
+    #sideMenu.open { right: 0; }
+    #menuOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 99998;
+      display: none;
+    }
+    .hamburger {
+      font-size: 1.8em;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+    }
+    .menuLink {
+      display: block;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9em;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+    .menuLink:hover { color: #FFD700; }
+
+
+
+.profileLabel {
+  letter-spacing: 2px;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255,215,0,0.3);
+  padding-bottom: 12px;
+}
+
+.profileLabel span {
+  font-weight: bold;
+}
+
+.profileLabel .label {
+  font-size: 1.1em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background: #C0C0C0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+}
+
+
+.profileLabel .rolevalue {
+  font-size: 1.2em;
+  text-transform: uppercase;
+  font-family: 'Anton', sans-serif;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Default gray if no role picked */
+.profileLabel .rolevalue {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+}
+
+/* Role-specific gradients */
+.profileLabel .rolevalue[data-role="verified"] {
+  background: #2ECC71;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+}
+
+.profileLabel .rolevalue[data-role="observer"] {
+  background: linear-gradient(90deg, #8B5CF6, #A78BFA, #D8B4FE, #A78BFA, #8B5CF6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+}
+
+.profileLabel .rolevalue[data-role="refined"] {
+  background: linear-gradient(90deg, #8B4A4A, #C47A7A, #FFB5B5, #C47A7A, #8B4A4A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+}
+
+.profileLabel .rolevalue[data-role="optimized"] {
+  background: linear-gradient(90deg, #8B7355, #C9A66B, #FFDC9C, #C9A66B, #8B7355);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+}
+
+.profileLabel .rolevalue[data-role="chronicler"] {
+  background: linear-gradient(90deg, #3A6B3A, #5A9A5A, #8CC28C, #5A9A5A, #3A6B3A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  background-size: 200% 100%;
+  animation: shine 3s linear infinite;
+}
+
+
+
+
+.profileLabel .value {
+  font-size: 1.2em;
+  font-family: 'Playfair Display', serif;
+  text-transform: uppercase;
+  background: linear-gradient(110deg, #FFFFFF 0%, #E0F2FE 25%, #BAE6FD 50%, #E0F2FE 75%, #FFFFFF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+}
+
+.profileLabel .ranklabel {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2em;
+  background: linear-gradient(90deg, #B8860B, #FFD700, #FFEA70, #FFD700, #B8860B);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+}
+
+
+@keyframes hqPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(192,192,192,0.3); }
+  50% { box-shadow: 0 0 25px rgba(192,192,192,0.7); }
+}
+
+
+@keyframes scanLine {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+#taskBox {
+  position: relative;
+}
+#taskBox::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #C0C0C0, transparent);
+  animation: scanLine 3s linear infinite;
+}
+
+
+
+#warriorHQ {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.8s ease;
+}
+
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<div id="topNav">
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <img src="optimum-primeLogo.png" alt="Logo" style="height: 30px; width: auto;">
+    <h3 style="margin: 0; font-family: 'Anton', sans-serif; letter-spacing: 2px; font-size: 1.2em; color: white;">OPTIMUM PRIME</h3>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <span style="background: #333; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75em; letter-spacing: 2px;">BETA</span>
+    <button class="hamburger" onclick="toggleMenu()">&#9776;</button>
+  </div>
+</div>
+
+<!-- Menu Overlay -->
+<div id="menuOverlay" onclick="toggleMenu()"></div>
+
+<!-- Side Menu -->
+<div id="sideMenu">
+  <button onclick="toggleMenu()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 1.5em; cursor: pointer;">&times;</button>
+  <h3 style="font-family: 'Orbitron', sans-serif; color: white; letter-spacing: 2px; margin-bottom: 30px;">MENU</h3>
+  <a href="index.html" class="menuLink">HOME</a>
+  <a href="dashboard.html" class="menuLink">DASHBOARD</a>
+  <a href="battlefield.html" class="menuLink">BATTLE FIELD</a>
+  <a href="sitedeveloper.html" class="menuLink">SITE DEVELOPER</a>
+  <a href="about.html" class="menuLink">ABOUT</a>
+  <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+    <a href="login.html" style="display: block; background: white; color: black; font-family: 'Orbitron', sans-serif; font-size: 0.9em; letter-spacing: 2px; padding: 12px 20px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold;">LOGIN</a>
+  </div>
+</div>
+
+
+
+</div>
+
+<!-- Page content goes below here -->
+<div style="padding-top: 70px;">
+
+
+
+
+
+
+<!--Profile picture-->
+
+<div style="display: flex; justify-content: center; margin-top: 60px;">
+  <!-- Outer silver border -->
+  <div style="width: 370px; height: 370px; border-radius: 50%; border: 12px solid #C0C0C0; box-shadow: 0 0 0 4px #E8E8E8, 0 0 0 8px #A9A9A9, 0 0 25px rgba(192,192,192,0.6); display: flex; align-items: center; justify-content: center; background: #d0d0d0;">
+    <!-- Middle grey ring -->
+    <div style="width: 340px; height: 340px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+      <!-- Inner white circle - profile pic goes here -->
+      <div id="profilePic" style="width: 300px; height: 300px; border-radius: 50%; background: white; overflow: hidden;">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div style="margin: 50px;"></div>
+
+
+<h1 style="font-family: 'Orbitron', sans-serif; font-size: 1em; letter-spacing: 3px; color: #1a1a1a; text-align: center; margin-bottom: 20px;">USER INFO</h1>
+<div style="margin: 20px auto; width: 90%; max-width: 400px; height: 2px; background: linear-gradient(to right, #000000, #8B6914, #FFD700, #8B6914, #000000);"></div>
+
+
+
+
+<!-- Dashboard-->
+
+
+
+<div style="background: linear-gradient(145deg, #1a1a2e, #16213e); opacity: 0.9; border-radius: 16px; border: 6px solid #DAA520; box-shadow: 0 0 0 3px #FFD700, 0 0 0 6px #B8860B, 0 0 20px rgba(218,165,32,0.4); padding: 20px; width: 90%; margin: 30px auto;">
+ 
+<p class="profileLabel"><span class="label">NAME:</span> <span class="value" id="nameField">—</span></p>
+<p class="profileLabel"><span class= "label">DISCORD USERNAME:</span> <span class="value" id="discordField">—</span></p>
+<p class="profileLabel"><span class="label">TWITTER USERNAME:</span> <span class="value" id="twitterField">—</span></p>
+<p class="profileLabel"><span class="label">DISCORD ROLE:</span> <span class="rolevalue" id="discordRoleField" style="color:purple">—</span></p>
+<p class="profileLabel" style="border-bottom: none; margin-bottom: 0;"><span id="rank" class="ranklabel">TIER:</span> <span id="rankField">—</span></p>
+ 
+</div>
+
+
+
+
+<div style="margin: 50px;"></div>
+
+
+
+
+<!--Achievements-->
+
+
+<div style="width: 95%; height: 400px; margin: 30px auto; border-radius: 16px; border: 6px ridge #FFD700; box-shadow: 0 0 20px rgba(255,215,0,0.3); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(15px); background: rgba(255,255,255,0.1);">
+  
+  <div style="text-align: center;">
+    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 1.5em; letter-spacing: 3px; margin: 0 0 16px; background: linear-gradient(90deg, #FFD700, #FFF8DC, #DAA520, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ACHIEVEMENTS</h2>
+    <div style="height: 1px; background: linear-gradient(to right, transparent, #FFD700, transparent); margin-bottom: 16px;"></div>
+    <p style="color: #6B7280; font-family: 'Orbitron', sans-serif; font-size: 0.85em; letter-spacing: 2px;">COMING SOON...</p>
+  </div>
+
+</div>
+
+
+
+
+<div style="margin: 400px;"></div>
+
+
+
+<!--HQ banner-->
+<div style="overflow: hidden; width: 100%;">
+  <div id="warriorHQ" style="width: 100%; background: linear-gradient(90deg, #1a1a1a, #2d2d2d, #1a1a1a); padding: 12px 20px; margin: 30px 0; display: flex; align-items: center; justify-content: center; gap: 15px; opacity: 0; transform: translateX(100%); transition: all 0.8s ease;">
+    <div style="height: 1px; flex: 1; background: linear-gradient(to right, transparent, #C0C0C0);"></div>
+    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.85em; letter-spacing: 4px; color: #C0C0C0; margin: 0; white-space: nowrap;">&#9876; WARRIOR HQ &#9876;</h3>
+    <div style="height: 1px; flex: 1; background: linear-gradient(to left, transparent, #C0C0C0);"></div>
+  </div>
+</div>
+
+
+<div style="margin: 50px;"></div>
+
+
+
+
+<!--Tasks-->
+<div style="background: linear-gradient(145deg, #1a1a2e, #16213e); opacity: 0.8; border-radius: 1px; border: 1px solid #DAA520; padding: 20px; width: 100%; margin: 30px auto;">
+
+
+    <h1 style="font-family: 'Anton', sans-serif; font-size: 2.5em; margin: 0 0 10px; letter-spacing: 3px; color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); text-align: center;">
+
+    <img src="optimumLogo.png" alt="Logo" style="height: 30px; width: auto;">
+OPTIMUM BASIC TASKS</h1>
+<!-- Task 1 -->
+<div id="task1Box" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(192,192,192,0.2); border-radius: 16px; padding: 24px; margin-bottom: 20px;">
+  <div style="display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <p style="font-family:'Orbitron',sans-serif; font-size:0.7em; color:rgba(192,192,192,0.5); letter-spacing:2px; margin:0 0 6px;">TASK 1</p>
+      <h3 style="font-family:'Orbitron',sans-serif; font-size:1em; color:white; margin:0 0 6px; letter-spacing:2px;">JOIN THE NETWORK</h3>
+      <p style="font-family:'Inter',sans-serif; font-size:0.85em; color:rgba(192,192,192,0.6); margin:0;">Follow Optimum on X and join their Discord server.</p>
+    </div>
+    <button id="task1StartBtn" onclick="openTask1()" style="background:white; color:black; border:none; padding:10px 20px; border-radius:8px; font-family:'Orbitron',sans-serif; font-size:0.75em; letter-spacing:2px; cursor:pointer; white-space:nowrap; margin-left:16px;">START TASK</button>
+  </div>
+</div>
+
+<!-- Task 1 Popup -->
+<div id="task1Popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; overflow-y:auto; opacity: 9;">
+  <div style="background:linear-gradient(145deg, #1a1a2e, #0d0d1a); border:1px solid rgba(192,192,192,0.2); border-radius:20px; padding:40px 30px; width:85%; max-width:420px; text-align:center; margin:40px auto;">
+    
+    <h2 style="font-family:'Anton',sans-serif; color:white; letter-spacing:3px; margin-bottom:6px;">TASK 1</h2>
+    <p style="font-family:'Orbitron',sans-serif; font-size:0.75em; color:rgba(192,192,192,0.5); letter-spacing:2px; margin-bottom:30px;">JOIN THE NETWORK</p>
+
+    <!-- Follow on X -->
+    <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(192,192,192,0.15); border-radius:12px; padding:20px; margin-bottom:16px;">
+      <img src="Optimum_image.jpg" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid rgba(192,192,192,0.3); margin-bottom:12px;">
+      <p style="font-family:'Orbitron',sans-serif; font-size:0.8em; color:white; letter-spacing:2px; margin:0 0 12px;">@get_optimum</p>
+      <a href="https://x.com/get_optimum" target="_blank" onclick="markX()" style="display:inline-block; background:black; color:white; padding:10px 24px; border-radius:8px; font-family:'Orbitron',sans-serif; font-size:0.8em; letter-spacing:2px; text-decoration:none;">FOLLOW ON X</a>
+    </div>
+
+    <!-- Join Discord -->
+    <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(192,192,192,0.15); border-radius:12px; padding:20px; margin-bottom:24px;">
+      <img src="discordLogo.webp" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid rgba(192,192,192,0.3); margin-bottom:12px;">
+      <p style="font-family:'Orbitron',sans-serif; font-size:0.8em; color:white; letter-spacing:2px; margin:0 0 12px;">OPTIMUM DISCORD</p>
+      <a href="https://discord.gg/getoptimum" target="_blank" onclick="markDiscord()" style="display:inline-block; background:#5865F2; color:white; padding:10px 24px; border-radius:8px; font-family:'Orbitron',sans-serif; font-size:0.8em; letter-spacing:2px; text-decoration:none;">JOIN DISCORD</a>
+    </div>
+
+    <!-- Verify button (hidden until both clicked) -->
+    <button id="verifyBtn" onclick="verifyTask1()" style="display:none; width:100%; padding:14px; background:linear-gradient(90deg, #FFD700, #DAA520); color:#1a1a1a; border:none; border-radius:8px; font-family:'Orbitron',sans-serif; font-size:0.9em; letter-spacing:2px; font-weight:bold; cursor:pointer; margin-bottom:16px;">VERIFY TASK</button>
+
+    <button onclick="document.getElementById('task1Popup').style.display='none'" style="background:transparent; color:rgba(192,192,192,0.4); border:none; font-family:'Orbitron',sans-serif; font-size:0.75em; letter-spacing:2px; cursor:pointer;">CLOSE</button>
+
+  </div>
+</div>
+
+<!--Task 2-->
+<div id="task2Box" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(192,192,192,0.2); border-radius: 16px; padding: 24px; margin-bottom: 20px;">
+  <div style="display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <p style="font-family:'Orbitron',sans-serif; font-size:0.7em; color:rgba(192,192,192,0.5); letter-spacing:2px; margin:0 0 6px;">TASK 2</p>
+      <h3 style="font-family:'Orbitron',sans-serif; font-size:1em; color:white; margin:0 0 6px; letter-spacing:2px;">OPTIMUM YOUTUBE</h3>
+      <p style="font-family:'Inter',sans-serif; font-size:0.85em; color:rgba(192,192,192,0.6); margin:0;">Subscribe to Optimum youtube to recieve latest video updates and insights.  </p>
+    </div>
+    <button id="task2StartBtn" onclick="openTask2()" style="background:white; color:black; border:none; padding:10px 20px; border-radius:8px; font-family:'Orbitron',sans-serif; font-size:0.75em; letter-spacing:2px; cursor:pointer; white-space:nowrap; margin-left:16px;">START TASK</button>
+  </div>
+</div>
+
+
+
+<!-- Task 2 Popup -->
+<div id="task2Popup" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); backdrop-filter:blur(10px); z-index:9999; align-items:center; justify-content:center; overflow-y:auto; opacity: 9;">
+  <div style="background:linear-gradient(145deg, #1a1a2e, #0d0d1a); border:1px solid rgba(192,192,192,0.2); border-radius:20px; padding:40px 30px; width:85%; max-width:420px; text-align:center; margin:40px auto;">
+
+    <h2 style="font-family:'Anton',sans-serif; color:white; letter-spacing:3px; margin-bottom:6px;">TASK 2</h2>
+    <p style="font-family:'Orbitron',sans-serif; font-size:0.75em; color:rgba(192,192,192,0.5); letter-spacing:2px; margin-bottom:30px;">SUBSCRIBE TO YOUTUBE</p>
+
+    <!-- Subscribe to youtube -->
+    <div style="background:rgba(255,255,255,0.1); border:1px solid rgba(192,192,192,0.15); border-radius:12px; padding:20px; margin-bottom:16px;">
+      <img src="Optimum_image.jpg" style="width:70px; height:70px; border-radius:50%; object-fit:cover; border:2px solid rgba(192,192,192,0.3); margin-bottom:12px;">
+      <p style="font-family:'Orbitron',sans-serif; font-size:0.8em; color:white; letter-spacing:2px; margin:0 0 12px;">@get_optimum</p>
+      <a href="https://youtube.com/@getoptimum?si=ck57Ai48j9MlJ8cA" target="_blank" onclick="markYT()" style="display:inline-block; background:black; color:white; padding:10px 24px; border-radius:8px; font-family:'Orbitron',sans-serif; font-size:0.8em; letter-spacing:2px; text-decoration:none;">Subscribe</a>
+    </div>
+
+    <!-- Verify button (hidden until both clicked) -->
+    <button id="verifyBtn2" onclick="verifyTask2()" style="display:none; width:100%; padding:14px; background:linear-gradient(90deg, #FFD700, #DAA520); color:#1a1a1a; border:none; border-radius:8px; font-family:'Orbitron',sans-serif; font-size:0.9em; letter-spacing:2px; font-weight:bold; cursor:pointer; margin-bottom:16px;">VERIFY TASK</button>
+     
+
+
+    <!--Close button-->
+    <button onclick="document.getElementById('task2Popup').style.display='none'" style="background:transparent; color:rgba(192,192,192,0.4); border:none; font-family:'Orbitron',sans-serif; font-size:0.75em; letter-spacing:2px; cursor:pointer;">CLOSE</button>
+
+
+  </div>
+</div>
+
+
+
+ <div style="margin: 300px;"></div>
+
+      <p style="text-align: center; font-family:'Orbitron',sans-serif; font-size:0.7em; color:rgba(192,192,192,0.5); letter-spacing:2px; margin:0 0 6px;">MORE TASKS SOON...</p>
+
+</div>
+
+
+<div style="margin: 500px;"></div>
+
+
+
+</div>
+
+<script>
+
+
+const SUPABASE_URL = 'https://hpjztfiijgkkbexpxxqz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhwanp0Zmlpamdra2JleHB4eHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NTA4ODUsImV4cCI6MjA5NzIyNjg4NX0.LbS4fFhnFWBg3U2dqV6eVERbX-GG4d0oPk40XKkMLSA';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+
+
+//Logs out when account deleted
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT' || !session) {
+    window.location.href = 'login.html';
+  }
+});
+
+
+const { data: profileData } = await supabaseClient
+  .from('users')
+  .select('display_name, discord_username, discord_role, avatar_url, twitter_username')
+  .eq('id', session.user.id)
+  .single();
+
+if (profileData) {
+  document.getElementById('nameField').textContent = profileData.display_name || session.user.user_metadata.display_name || '\u2014';
+  document.getElementById('discordField').textContent = profileData.discord_username ? '@' + profileData.discord_username : '\u2014'
+  document.getElementById('twitterField').textContent = profileData.twitter_username ? profileData.twitter_username : '\u2014';
+  document.getElementById('discordRoleField').textContent = profileData.discord_role || '\u2014';
+  document.getElementById('rankField').textContent = '\u2014';
+
+  if (profileData.avatar_url) {
+    const profilePic = document.getElementById('profilePic');
+    if (profilePic) {
+      profilePic.innerHTML = `<img src="${profileData.avatar_url}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+    }
+  }
+
+
+
+//TASKS VERIFICATION UPDATING UPON REFRESH
+const { data: taskData, error } = await supabaseClient
+  .from('users')
+  .select('task1_completed, task2_completed') // comma inside 1 string
+  .eq('id', session.user.id)
+  .single();
+
+if (error) console.log(error);
+
+if (taskData?.task1_completed) {
+  document.getElementById('task1Box').style.border = '1px solid #FFD700';
+  document.getElementById('task1Box').style.background = 'rgba(255,215,0,0.05)';
+  document.getElementById('task1StartBtn').innerHTML = '<p style="font-family:\'Orbitron\',sans-serif; font-size:0.75em; color:#FFD700; letter-spacing:2px; margin:0;">COMPLETED ✓</p>';
+}
+
+if (taskData?.task2_completed) {
+  document.getElementById('task2Box').style.border = '1px solid #FFD700';
+  document.getElementById('task2Box').style.background = 'rgba(255,215,0,0.05)';
+  document.getElementById('task2StartBtn').innerHTML = '<p style="font-family:\'Orbitron\',sans-serif; font-size:0.75em; color:#FFD700; letter-spacing:2px; margin:0;">COMPLETED ✓</p>';
+}
+
+}
+
+
+});
+
+// NAVBAR movements
+function toggleMenu() {
+  document.getElementById('sideMenu').classList.toggle('open');
+  const overlay = document.getElementById('menuOverlay');
+  overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+}
+
+
+
+
+
+//HQ banner live animation
+const hqObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.getElementById('warriorHQ').style.opacity = '1';
+      document.getElementById('warriorHQ').style.transform = 'translateX(0)';
+      hqObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0, rootMargin: '0px 0px 500px 0px' });
+
+hqObserver.observe(document.getElementById('warriorHQ'));
+
+
+
+
+
+
+
+
+
+supabaseClient.auth.getSession().then(({ data: { session } }) => {
+  if (session) {
+    // Replace login link with logout button in side menu
+    const loginLink = document.querySelector('a[href="login.html"]');
+    if (loginLink) {
+      loginLink.textContent = 'LOGOUT';
+      loginLink.href = '#';
+      loginLink.onclick = async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = 'login.html';
+      };
+    }
+  }
+});
+
+
+
+
+
+let xClicked = false;
+let discordClicked = false;
+
+
+function openTask1() {
+  document.getElementById('task1Popup').style.display = 'flex';
+}
+
+function markX() {
+  xClicked = true;
+  checkBothClicked();
+}
+
+function markDiscord() {
+  discordClicked = true;
+  checkBothClicked();
+}
+
+function checkBothClicked() {
+  if (xClicked && discordClicked) {
+    document.getElementById('verifyBtn').style.display = 'block';
+  }
+}
+
+async function verifyTask1() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) return;
+
+  await supabaseClient.from('users').upsert({
+    id: session.user.id,
+    task1_completed: true
+  });
+
+  document.getElementById('task1Popup').style.display = 'none';
+  document.getElementById('task1Box').style.border = '1px solid #FFD700';
+  document.getElementById('task1Box').style.background = 'rgba(255,215,0,0.05)';
+  document.getElementById('task1StartBtn').innerHTML = '<p style="font-family:\'Orbitron\',sans-serif; font-size:0.75em; color:#FFD700; letter-spacing:2px; margin:0;">COMPLETED ✓</p>';
+alert('Task 1 Complete! Badge incoming...');
+}
+
+
+
+const role = localStorage.getItem('selectedRole');
+const roleEl = document.querySelector('.rolevalue');
+
+if (role && roleEl) {
+  roleEl.textContent = '@' + role;
+  roleEl.setAttribute('data-role', role.toLowerCase());
+}
+
+
+// Task 2 verification
+
+let YTClicked = false;
+
+
+function openTask2() {
+  document.getElementById('task2Popup').style.display = 'flex';
+}
+
+function markYT() {
+  YTClicked = true;
+checkClicked();
+}
+
+function checkClicked() {
+  if (YTClicked === true) {
+    document.getElementById('verifyBtn2').style.display = 'block';
+  }
+}
+
+
+async function verifyTask2() {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) return;
+
+  await supabaseClient.from('users').upsert({
+    id: session.user.id,
+    task2_completed: true
+  });
+
+  document.getElementById('task2Popup').style.display = 'none';
+  document.getElementById('task2Box').style.border = '1px solid #FFD700';
+  document.getElementById('task2Box').style.background = 'rgba(255,215,0,0.05)';
+  document.getElementById('task2StartBtn').innerHTML = '<p style="font-family:\'Orbitron\',sans-serif; font-size:0.75em; color:#FFD700; letter-spacing:2px; margin:0;">COMPLETED ✓</p>';
+alert('Task 1 Complete! Badge incoming...');
+}
+
+
+// CODE TEST
+
+
+
+
+</script>
+
+</body>
+</html>

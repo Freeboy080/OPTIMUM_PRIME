@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+
+
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(180deg, #B0B4BE 0%, #E8EAF0 50%, #F5F5F5 85%, #1a1a1a 100%);
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+    }
+    #topNav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(15px);
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      box-sizing: border-box;
+    }
+    #sideMenu {
+      position: fixed;
+      top: 0;
+      right: -350px;
+      width: 300px;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(15px);
+      z-index: 99999;
+      transition: right 0.4s ease;
+      padding: 80px 30px 30px;
+    }
+    #sideMenu.open { right: 0; }
+    #menuOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 99998;
+      display: none;
+    }
+    .hamburger {
+      font-size: 1.8em;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+    }
+    .menuLink {
+      display: block;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9em;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+    .menuLink:hover { color: #FFD700; }
+
+
+@media (max-width: 600px) {
+  div[style*="grid-template-columns: repeat(2, 1fr)"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+
+
+#update-box {
+  max-width: 1400px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden; /* this makes button corners match box */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background: #fff;
+}
+
+#update-title {
+  padding: 16px 16px 12px 16px;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.update-content {
+  display: flex;
+  gap: 12px;
+  padding: 0 16px 16px 16px;
+}
+
+#update-img {
+  width: 150px;
+  height: auto;
+  aspect-ratio: 687 / 812;
+  object-fit: contain;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+#update-date {
+  margin: 0;
+  font-size: 13px;
+  color: #666;
+  flex: 1;
+}
+
+.x-btn {
+  width: 100%;
+  padding: 14px 16px;
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  box-sizing: border-box; /* key fix - prevents overflow */
+  display: block;
+}
+
+.x-btn:hover {
+  opacity: 0.8;
+}
+
+#x-link {
+  text-decoration: none;
+  display: block; /* makes link fill width too */
+}
+
+
+
+
+  </style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<div id="topNav">
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <img src="optimum-primeLogo.png" alt="Logo" style="height: 30px; width: auto;">
+    <h3 style="margin: 0; font-family: 'Anton', sans-serif; letter-spacing: 2px; font-size: 1.2em; color: white;">OPTIMUM PRIME</h3>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <span style="background: #333; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75em; letter-spacing: 2px;">BETA</span>
+    <button class="hamburger" onclick="toggleMenu()">&#9776;</button>
+  </div>
+</div>
+<!-- Menu Overlay -->
+<div id="menuOverlay" onclick="toggleMenu()"></div>
+
+<!-- Side Menu -->
+<div id="sideMenu">
+  <button onclick="toggleMenu()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 1.5em; cursor: pointer;">&times;</button>
+  <h3 style="font-family: 'Orbitron', sans-serif; color: white; letter-spacing: 2px; margin-bottom: 30px;">MENU</h3>
+  <a href="index.html" class="menuLink">HOME</a>
+  <a href="dashboard.html" class="menuLink">DASHBOARD</a>
+  <a href="battlefield.html" class="menuLink">BATTLE FIELD</a>
+  <a href="sitedeveloper.html" class="menuLink">SITE DEVELOPER</a>
+  <a href="about.html" class="menuLink">ABOUT</a>
+  <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+    <a href="login.html" style="display: block; background: white; color: black; font-family: 'Orbitron', sans-serif; font-size: 0.9em; letter-spacing: 2px; padding: 12px 20px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold;">LOGIN</a>
+  </div>
+</div>
+
+
+
+</div>
+
+<!-- Page content goes below here -->
+<div style="padding-top: 70px;">
+
+
+
+<div style="padding: 100px 20px 60px; max-width: 900px; margin: 0 auto;">
+
+  <h1 style="font-family: 'Anton', sans-serif; font-size: 2.5em; letter-spacing: 3px; text-align: center; margin-bottom: 10px;">THE FUN BEGINS HERE</h1>
+  <p style="font-family: 'Orbitron', sans-serif; font-size: 0.85em; color: #6B7280; text-align: center; letter-spacing: 2px; margin-bottom: 40px;">CHOOSE YOUR ACTION</p>
+
+  <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;">
+
+    <!-- Card 1 -->
+    <div style="background: white; border-radius: 16px; padding: 30px 20px; min-height: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 2px solid #1a1a1a; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+      <div>
+        <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1em; letter-spacing: 2px; color: #1a1a1a; margin-bottom: 16px;">UPLOAD YOUR ARTS</h3>
+        <div style="height: 1px; background: linear-gradient(to right, #1a1a1a, transparent); margin-bottom: 16px;"></div>
+        <p style="font-family: 'Inter', sans-serif; font-size: 0.85em; color: #6B7280; line-height: 1.7;">Share your warrior-themed creations with the Optimum community. Your art contributes to the ecosystem and could be featured across the platform.</p>
+      </div>
+      <div style="margin-top: 20px;">
+        <span style="font-family: 'Orbitron', sans-serif; font-size: 0.75em; letter-spacing: 2px; color: #1a1a1a; border: 1px solid #1a1a1a; padding: 6px 14px; border-radius: 20px;">COMING SOON</span>
+      </div>
+    </div>
+
+    <!-- Card 2 -->
+    <div style="background: white; border-radius: 16px; padding: 30px 20px; min-height: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 2px solid #1a1a1a; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+      <div>
+        <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1em; letter-spacing: 2px; color: #1a1a1a; margin-bottom: 16px;">SUGGESTIONS</h3>
+        <div style="height: 1px; background: linear-gradient(to right, #1a1a1a, transparent); margin-bottom: 16px;"></div>
+        <p style="font-family: 'Inter', sans-serif; font-size: 0.85em; color: #6B7280; line-height: 1.7;">Have an idea that could improve the platform or the Optimum ecosystem? Drop your suggestion here and help shape the future of the battlefield.</p>
+      </div>
+      <div style="margin-top: 20px;">
+        <span style="font-family: 'Orbitron', sans-serif; font-size: 0.75em; letter-spacing: 2px; color: #1a1a1a; border: 1px solid #1a1a1a; padding: 6px 14px; border-radius: 20px;">COMING SOON</span>
+      </div>
+    </div>
+
+    <!-- Card 3 -->
+    <div style="background: white; border-radius: 16px; padding: 30px 20px; min-height: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 2px solid #1a1a1a; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+      <div>
+        <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1em; letter-spacing: 2px; color: #1a1a1a; margin-bottom: 16px;">REQUEST COLLABORATION</h3>
+        <div style="height: 1px; background: linear-gradient(to right, #1a1a1a, transparent); margin-bottom: 16px;"></div>
+        <p style="font-family: 'Inter', sans-serif; font-size: 0.85em; color: #6B7280; line-height: 1.7;">Connect with other warriors in the ecosystem. Request a collab, build together, and grow your presence within the Optimum community.</p>
+      </div>
+      <div style="margin-top: 20px;">
+        <span style="font-family: 'Orbitron', sans-serif; font-size: 0.75em; letter-spacing: 2px; color: #1a1a1a; border: 1px solid #1a1a1a; padding: 6px 14px; border-radius: 20px;">COMING SOON</span>
+      </div>
+    </div>
+
+    <!-- Card 4 -->
+    <div style="background: white; border-radius: 16px; padding: 30px 20px; min-height: 300px; box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 2px solid #1a1a1a; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; transition: transform 0.2s ease;" onmouseover="this.style.transform='scale(1.02)'" onmouseout="this.style.transform='scale(1)'">
+      <div>
+        <h3 style="font-family: 'Orbitron', sans-serif; font-size: 1em; letter-spacing: 2px; color: #1a1a1a; margin-bottom: 16px;">CHAT WITH THE DEV</h3>
+        <div style="height: 1px; background: linear-gradient(to right, #1a1a1a, transparent); margin-bottom: 16px;"></div>
+        <p style="font-family: 'Inter', sans-serif; font-size: 0.85em; color: #6B7280; line-height: 1.7;">Got a question, feedback, or just want to connect? Drop a message directly to the site developer and get a response from the builder himself.</p>
+      </div>
+      <div style="margin-top: 20px;">
+        <span style="font-family: 'Orbitron', sans-serif; font-size: 0.75em; letter-spacing: 2px; color: #1a1a1a; border: 1px solid #1a1a1a; padding: 6px 14px; border-radius: 20px;">COMING SOON</span>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+<div style="margin: 400px;"></div>
+
+
+
+<!-- Optimum Dispatch Banner -->
+<div style="overflow: hidden; width: 100%; margin-top: 60px;">
+  <div id="dispatchBanner" style="width: 100%; background: linear-gradient(90deg, #1a1a1a, #2d2d2d, #1a1a1a); padding: 12px 20px; display: flex; align-items: center; justify-content: center; gap: 15px; opacity: 0; transform: translateX(100%); transition: all 0.8s ease;">
+    <div style="height: 1px; flex: 1; background: linear-gradient(to right, transparent, #C0C0C0);"></div>
+    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.85em; letter-spacing: 4px; color: #C0C0C0; margin: 0; white-space: nowrap; display: flex; align-items: center; gap: 8px;">
+  <img src="optimumLogo.png" style="width: 20px; height: 20px; object-fit: contain;">
+  OPTIMUM DISPATCH
+  <img src="optimumLogo.png" style="width: 20px; height: 20px; object-fit: contain;">
+</h3>
+    <div style="height: 1px; flex: 1; background: linear-gradient(to left, transparent, #C0C0C0);"></div>
+  </div>
+</div>
+
+<!-- Updates Space -->
+<div id="updatesContainer" style="width: 90%; margin: 30px auto; min-height: 400px; background: rgba(0,0,0,0.05); border-radius: 16px; border: 1px solid rgba(0,0,0,0.1); padding: 30px;">
+
+
+
+  <p style="font-family: 'Orbitron', sans-serif; font-size: 0.85em; color: #6B7280; text-align: center; letter-spacing: 2px; margin-bottom: 40px;">OPTIMUM X UPDATE</p>
+
+
+<div id="update-box" style="display:none">
+  <h5 style="font-family: 'Anton', sans-serif; font-size: 1em; letter-spacing: 1px; text-align: left; margin-bottom: 10px;" id="update-title"></h5>
+  
+  <div class="update-content">
+    <img id="update-img" alt="Update" />
+    <p id="update-date" style="text-align: right;"></p>
+  </div>
+  
+  <a id="x-link" target="_blank">
+    <button class="x-btn">View Post →</button>
+  </a>
+</div>
+
+
+
+
+
+</div>
+
+<script>
+
+
+const SUPABASE_URL = 'https://hpjztfiijgkkbexpxxqz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhwanp0Zmlpamdra2JleHB4eHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NTA4ODUsImV4cCI6MjA5NzIyNjg4NX0.LbS4fFhnFWBg3U2dqV6eVERbX-GG4d0oPk40XKkMLSA';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+
+
+
+//logs account out when deleted
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT' || !session) {
+    window.location.href = 'login.html';
+  }
+});
+
+
+
+});
+
+
+function toggleMenu() {
+  document.getElementById('sideMenu').classList.toggle('open');
+  const overlay = document.getElementById('menuOverlay');
+  overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+}
+
+
+
+// OPTIMUM DISPATCH BANNER
+const dispatchObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.getElementById('dispatchBanner').style.opacity = '1';
+      document.getElementById('dispatchBanner').style.transform = 'translateX(0)';
+      dispatchObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0, rootMargin: '0px 0px 500px 0px' });
+
+dispatchObserver.observe(document.getElementById('dispatchBanner'));
+
+
+
+async function loadUpdate() {
+  console.log('1. Starting fetch...')
+  const url = 'https://hpjztfiijgkkbexpxxqz.supabase.co/storage/v1/object/public/updates/updates.json?t=' + Date.now()
+  
+  try {
+    const res = await fetch(url)
+    console.log('2. Fetch status:', res.status)
+    if (!res.ok) throw new Error('HTTP ' + res.status)
+    
+    const data = await res.json()
+    console.log('3. Got data:', data)
+    
+    const postDate = new Date(data.date)
+    const hideDate = new Date(postDate)
+    hideDate.setDate(postDate.getDate() + 7)
+    const today = new Date()
+    today.setHours(0,0,0,0)
+    hideDate.setHours(0,0,0,0)
+    
+    console.log('4. Today:', today.toDateString(), 'Hide date:', hideDate.toDateString())
+    
+    if (today <= hideDate) {
+      console.log('5. Showing post')
+      document.getElementById('update-box').style.display = 'block'
+      document.getElementById('x-link').href = data.x_link
+      document.getElementById('update-img').src = data.img
+      document.getElementById('update-title').textContent = data.title
+      document.getElementById('update-date').textContent = data.date
+    } else {
+      console.log('5. Hiding post - 7 days passed')
+      document.getElementById('update-box').style.display = 'none'
+    }
+    
+  } catch (err) {
+    alert('BROKEN AT: ' + err.message)
+    console.error(err)
+  }
+}
+loadUpdate()
+
+
+
+
+supabaseClient.auth.getSession().then(({ data: { session } }) => {
+  if (session) {
+    const loginLink = document.querySelector('a[href="login.html"]');
+    if (loginLink) {
+      loginLink.textContent = 'LOGOUT';
+      loginLink.href = '#';
+      loginLink.onclick = async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = 'login.html';
+      };
+    }
+  }
+});
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>

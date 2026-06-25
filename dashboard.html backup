@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+
+
+
+
+
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(180deg, #B0B4BE 0%, #E8EAF0 50%, #F5F5F5 85%, #1a1a1a 100%);
+      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+    }
+    #topNav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(15px);
+      z-index: 9998;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      box-sizing: border-box;
+    }
+    #sideMenu {
+      position: fixed;
+      top: 0;
+      right: -350px;
+      width: 300px;
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(15px);
+      z-index: 99999;
+      transition: right 0.4s ease;
+      padding: 80px 30px 30px;
+    }
+    #sideMenu.open { right: 0; }
+    #menuOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 99998;
+      display: none;
+    }
+    .hamburger {
+      font-size: 1.8em;
+      cursor: pointer;
+      color: white;
+      background: none;
+      border: none;
+    }
+    .menuLink {
+      display: block;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9em;
+      letter-spacing: 2px;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+    .menuLink:hover { color: #FFD700; }
+
+
+
+.profileLabel {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9em;
+  letter-spacing: 2px;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+  border-bottom: 1px solid rgba(255,215,0,0.3);
+  padding-bottom: 12px;
+}
+.profileLabel span {
+  background: linear-gradient(90deg, #FFD700, #FFF8DC, #FFD700);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: bold;
+}
+
+
+
+
+
+
+
+
+@keyframes hqPulse {
+  0%, 100% { box-shadow: 0 0 10px rgba(192,192,192,0.3); }
+  50% { box-shadow: 0 0 25px rgba(192,192,192,0.7); }
+}
+
+
+@keyframes scanLine {
+  0% { top: 0%; }
+  100% { top: 100%; }
+}
+#taskBox {
+  position: relative;
+}
+#taskBox::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, #C0C0C0, transparent);
+  animation: scanLine 3s linear infinite;
+}
+
+
+
+
+
+#warriorHQ {
+  opacity: 0;
+  transform: translateX(100%);
+  transition: all 0.8s ease;
+}
+
+
+
+  </style>
+</head>
+<body>
+
+<!-- Top Nav -->
+<div id="topNav">
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <img src="optimum-primeLogo.png" alt="Logo" style="height: 30px; width: auto;">
+    <h3 style="margin: 0; font-family: 'Anton', sans-serif; letter-spacing: 2px; font-size: 1.2em; color: white;">OPTIMUM PRIME</h3>
+  </div>
+
+  <div style="display: flex; align-items: center; gap: 10px;">
+    <span style="background: #333; color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75em; letter-spacing: 2px;">BETA</span>
+    <button class="hamburger" onclick="toggleMenu()">&#9776;</button>
+  </div>
+</div>
+
+<!-- Menu Overlay -->
+<div id="menuOverlay" onclick="toggleMenu()"></div>
+
+<!-- Side Menu -->
+<div id="sideMenu">
+  <button onclick="toggleMenu()" style="position: absolute; top: 20px; right: 20px; background: none; border: none; color: white; font-size: 1.5em; cursor: pointer;">&times;</button>
+  <h3 style="font-family: 'Orbitron', sans-serif; color: white; letter-spacing: 2px; margin-bottom: 30px;">MENU</h3>
+  <a href="index.html" class="menuLink">HOME</a>
+  <a href="dashboard.html" class="menuLink">DASHBOARD</a>
+  <a href="battlefield.html" class="menuLink">BATTLE FIELD</a>
+  <a href="sitedeveloper.html" class="menuLink">SITE DEVELOPER</a>
+  <a href="about.html" class="menuLink">ABOUT</a>
+  <div style="margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); padding-top: 20px;">
+    <a href="login.html" style="display: block; background: white; color: black; font-family: 'Orbitron', sans-serif; font-size: 0.9em; letter-spacing: 2px; padding: 12px 20px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold;">LOGIN</a>
+  </div>
+</div>
+
+
+
+</div>
+
+<!-- Page content goes below here -->
+<div style="padding-top: 70px;">
+
+
+
+
+
+
+<!--Profile picture-->
+
+<div style="display: flex; justify-content: center; margin-top: 60px;">
+  <!-- Outer silver border -->
+  <div style="width: 370px; height: 370px; border-radius: 50%; border: 12px solid #C0C0C0; box-shadow: 0 0 0 4px #E8E8E8, 0 0 0 8px #A9A9A9, 0 0 25px rgba(192,192,192,0.6); display: flex; align-items: center; justify-content: center; background: #d0d0d0;">
+    <!-- Middle grey ring -->
+    <div style="width: 340px; height: 340px; border-radius: 50%; background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+      <!-- Inner white circle - profile pic goes here -->
+      <div id="profilePic" style="width: 300px; height: 300px; border-radius: 50%; background: white; overflow: hidden;">
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div style="margin: 50px;"></div>
+
+
+<h1 style="font-family: 'Orbitron', sans-serif; font-size: 1em; letter-spacing: 3px; color: #1a1a1a; text-align: center; margin-bottom: 20px;">USER INFO</h1>
+<div style="margin: 20px auto; width: 90%; max-width: 400px; height: 2px; background: linear-gradient(to right, #000000, #8B6914, #FFD700, #8B6914, #000000);"></div>
+
+
+
+
+<!-- Dashboard-->
+
+
+
+<div style="background: linear-gradient(145deg, #1a1a2e, #16213e); opacity: 0.9; border-radius: 16px; border: 6px solid #DAA520; box-shadow: 0 0 0 3px #FFD700, 0 0 0 6px #B8860B, 0 0 20px rgba(218,165,32,0.4); padding: 20px; width: 90%; margin: 30px auto;">
+ 
+<p class="profileLabel"><span>NAME:</span> <span id="nameField">—</span></p>
+<p class="profileLabel"><span>DISCORD USERNAME:</span> <span id="discordField">—</span></p>
+<p class="profileLabel"><span>TWITTER USERNAME:</span> <span id="twitterField">—</span></p>
+<p class="profileLabel"><span>DISCORD ROLE:</span> <span id="discordRoleField">—</span></p>
+<p class="profileLabel" style="border-bottom: none; margin-bottom: 0;"><span>RANK:</span> <span id="rankField">—</span></p>
+ 
+</div>
+
+
+
+
+<div style="margin: 50px;"></div>
+
+
+
+
+<!--Achievements-->
+
+
+<div style="width: 95%; height: 400px; margin: 30px auto; border-radius: 16px; border: 6px ridge #FFD700; box-shadow: 0 0 20px rgba(255,215,0,0.3); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(15px); background: rgba(255,255,255,0.1);">
+  
+  <div style="text-align: center;">
+    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 1.5em; letter-spacing: 3px; margin: 0 0 16px; background: linear-gradient(90deg, #FFD700, #FFF8DC, #DAA520, #FFD700); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">ACHIEVEMENTS</h2>
+    <div style="height: 1px; background: linear-gradient(to right, transparent, #FFD700, transparent); margin-bottom: 16px;"></div>
+    <p style="color: #6B7280; font-family: 'Orbitron', sans-serif; font-size: 0.85em; letter-spacing: 2px;">COMING SOON...</p>
+  </div>
+
+</div>
+
+
+
+
+<div style="margin: 400px;"></div>
+
+
+
+<!--HQ banner-->
+<div style="overflow: hidden; width: 100%;">
+  <div id="warriorHQ" style="width: 100%; background: linear-gradient(90deg, #1a1a1a, #2d2d2d, #1a1a1a); padding: 12px 20px; margin: 30px 0; display: flex; align-items: center; justify-content: center; gap: 15px; opacity: 0; transform: translateX(100%); transition: all 0.8s ease;">
+    <div style="height: 1px; flex: 1; background: linear-gradient(to right, transparent, #C0C0C0);"></div>
+    <h3 style="font-family: 'Orbitron', sans-serif; font-size: 0.85em; letter-spacing: 4px; color: #C0C0C0; margin: 0; white-space: nowrap;">&#9876; WARRIOR HQ &#9876;</h3>
+    <div style="height: 1px; flex: 1; background: linear-gradient(to left, transparent, #C0C0C0);"></div>
+  </div>
+</div>
+
+
+<div style="margin: 200px;"></div>
+
+
+
+
+<!--Tasks-->
+<div id="taskBox" style="width: 90%; height: 400px; margin: 30px auto; border-radius: 16px; border: 6px ridge #C0C0C0; box-shadow: 0 0 0 3px #E8E8E8, 0 0 0 6px #A9A9A9, 0 0 20px rgba(192,192,192,0.4); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.7); backdrop-filter: blur(15px);">
+  
+  <div style="text-align: center;">
+    <h2 style="font-family: 'Orbitron', sans-serif; font-size: 1.5em; letter-spacing: 3px; margin: 0 0 16px; background: linear-gradient(90deg, #C0C0C0, #E8EAF0, #A9A9A9, #E8EAF0, #C0C0C0); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">TASKS</h2>
+    <div style="height: 1px; background: linear-gradient(to right, transparent, #C0C0C0, transparent); margin-bottom: 16px;"></div>
+    <p style="color: white; font-family: 'Orbitron', sans-serif; font-size: 0.85em; letter-spacing: 2px;">COMING SOON...
+
+<div style="background: white; border-radius: 16px; padding: 30px; width: 90%; margin: 30px auto; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+  <p style="font-family: 'Orbitron', sans-serif; font-size: 0.85em; color: #6B7280; letter-spacing: 1px; line-height: 1.8; text-align: center;">Tasks are your gateway to deeper contribution within the Optimum ecosystem. Each completed task strengthens your presence on the platform while directly supporting Optimum's growth giving you an edge both here and in the broader ecosystem. It's a win for you. It's a win for Optimum.</p>
+</div>
+
+</p>
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+<script>
+
+
+const SUPABASE_URL = 'https://hpjztfiijgkkbexpxxqz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhwanp0Zmlpamdra2JleHB4eHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NTA4ODUsImV4cCI6MjA5NzIyNjg4NX0.LbS4fFhnFWBg3U2dqV6eVERbX-GG4d0oPk40XKkMLSA';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) {
+    window.location.href = 'login.html';
+    return;
+  }
+
+
+
+//Logs out when account deleted
+supabaseClient.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_OUT' || !session) {
+    window.location.href = 'login.html';
+  }
+});
+
+
+const { data: profileData } = await supabaseClient
+  .from('users')
+  .select('display_name, discord_username, discord_role, avatar_url, twitter_username')
+  .eq('id', session.user.id)
+  .single();
+
+if (profileData) {
+  document.getElementById('nameField').textContent = profileData.display_name || session.user.user_metadata.display_name || '\u2014';
+  document.getElementById('discordField').textContent = profileData.discord_username ? '@' + profileData.discord_username : '\u2014'
+  document.getElementById('twitterField').textContent = profileData.twitter_username ? profileData.twitter_username : '\u2014';
+  document.getElementById('discordRoleField').textContent = profileData.discord_role || '\u2014';
+  document.getElementById('rankField').textContent = '\u2014';
+
+  if (profileData.avatar_url) {
+    const profilePic = document.getElementById('profilePic');
+    if (profilePic) {
+      profilePic.innerHTML = `<img src="${profileData.avatar_url}" style="width:100%; height:100%; object-fit:cover; border-radius:50%;">`;
+    }
+  }
+
+}
+
+
+});
+
+// NAVBAR movements
+function toggleMenu() {
+  document.getElementById('sideMenu').classList.toggle('open');
+  const overlay = document.getElementById('menuOverlay');
+  overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+}
+
+
+
+
+
+//HQ banner live animation
+const hqObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      document.getElementById('warriorHQ').style.opacity = '1';
+      document.getElementById('warriorHQ').style.transform = 'translateX(0)';
+      hqObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0, rootMargin: '0px 0px 500px 0px' });
+
+hqObserver.observe(document.getElementById('warriorHQ'));
+
+
+
+
+
+
+
+
+
+supabaseClient.auth.getSession().then(({ data: { session } }) => {
+  if (session) {
+    // Replace login link with logout button in side menu
+    const loginLink = document.querySelector('a[href="login.html"]');
+    if (loginLink) {
+      loginLink.textContent = 'LOGOUT';
+      loginLink.href = '#';
+      loginLink.onclick = async () => {
+        await supabaseClient.auth.signOut();
+        window.location.href = 'login.html';
+      };
+    }
+  }
+});
+
+
+</script>
+
+</body>
+</html>

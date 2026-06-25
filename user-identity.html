@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — Optimum Prime</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+
+ body {
+    min-height: 100vh;
+    /* Layered background: Image first, then your existing gradient */
+    background-image: url('background3.png'), radial-gradient(ellipse at top left, #2a2a3d 0%, #1a1a2e 40%, #0d0d1a 100%);
+    background-size: cover, auto; /* Image covers, gradient stays standard */
+    background-position: center bottom, center;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: fixed, fixed;
+    background-size: contain;
+
+    font-family: 'Inter', sans-serif;
+    overflow-x: hidden;
+}
+
+
+
+
+    /* Animated grid lines */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        linear-gradient(rgba(192,192,192,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(192,192,192,0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Top glow effect */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 600px;
+      height: 300px;
+      background: radial-gradient(ellipse, rgba(192,192,192,0.08) 0%, transparent 70%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Floating particles */
+    @keyframes floatUp {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.3; }
+      100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+    }
+
+    .particle {
+      position: fixed;
+      width: 3px;
+      height: 3px;
+      background: #C0C0C0;
+      border-radius: 50%;
+      animation: floatUp linear infinite;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+
+
+
+
+
+
+.roleCard {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(192,192,192,0.2);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+.roleCard:active {
+  transform: scale(0.97);
+}
+.roleCard.selected {
+  border-color: #C0C0C0;
+  background: rgba(192,192,192,0.15);
+  box-shadow: 0 0 15px rgba(192,192,192,0.3);
+}
+.roleTitle {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.85em;
+  color: white;
+  letter-spacing: 1px;
+  margin: 0 0 6px;
+}
+.roleDesc {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75em;
+  color: rgba(192,192,192,0.6);
+  margin: 0;
+}
+input::placeholder { color: rgba(192,192,192,0.4); }
+
+
+
+
+
+  </style>
+</head>
+<body>
+
+<!-- Floating particles -->
+
+<div class="particle" style="left: 10%; animation-duration: 12s; animation-delay: 0s;"></div>
+<div class="particle" style="left: 20%; animation-duration: 18s; animation-delay: 3s; width:2px; height:2px;"></div>
+<div class="particle" style="left: 35%; animation-duration: 14s; animation-delay: 6s;"></div>
+<div class="particle" style="left: 50%; animation-duration: 20s; animation-delay: 1s; width:4px; height:4px;"></div>
+<div class="particle" style="left: 65%; animation-duration: 16s; animation-delay: 4s;"></div>
+<div class="particle" style="left: 80%; animation-duration: 11s; animation-delay: 8s; width:2px; height:2px;"></div>
+<div class="particle" style="left: 90%; animation-duration: 15s; animation-delay: 2s;"></div>
+
+<!-- Page content goes here -->
+<div style="position: relative; z-index: 1; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px;">
+
+<!--Optimum logo-->
+<div style="position: fixed; top: 20px; left: 20px; z-index: 999;">
+  <img src="optimumLogo.png" style="width: 60px; object-fit: contain;">
+</div>
+
+
+
+<!--Login dashboard-->
+<div style="background: rgba(255,255,255,0.05); backdrop-filter: blur(20px); border: 1px solid rgba(192,192,192,0.2); border-radius: 20px; padding: 40px 30px; width: 90%; max-width: 1000px; box-shadow: 0 8px 32px rgba(0,0,0,0.4);">
+
+ <!--Optimum logo-->
+<div style="text-align: center; margin-bottom: 24px;">
+  <img src="optimumLogo2.png" style="width: 100px; object-fit: contain;">
+</div>
+
+
+<!-- Title -->
+<h2 style="font-family: 'Anton', sans-serif; font-size: 1.8em; letter-spacing: 3px; color: white; text-align: center; margin-bottom: 8px;">YOUR IDENTITY</h2>
+<p style="font-family: 'Orbitron', sans-serif; font-size: 0.75em; color: rgba(192,192,192,0.6); text-align: center; letter-spacing: 2px; margin-bottom: 30px;">SET UP YOUR PROFILE</p>
+
+<!-- Discord Role Selection -->
+<p style="font-family: 'Orbitron', sans-serif; font-size: 0.75em; color: rgba(192,192,192,0.6); letter-spacing: 2px; margin-bottom: 12px;">SELECT YOUR DISCORD ROLE</p>
+
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 24px;">
+
+  <div onclick="selectRole(this, 'Verified')" class="roleCard">
+    <p class="roleTitle">@Verified</p>
+    <p class="roleDesc">Verified community member</p>
+  </div>
+
+  <div onclick="selectRole(this, 'Observer')" class="roleCard">
+    <p class="roleTitle">@Observer</p>
+    <p class="roleDesc">Watching and learning</p>
+  </div>
+
+  <div onclick="selectRole(this, 'Refined')" class="roleCard">
+    <p class="roleTitle">@Refined</p>
+    <p class="roleDesc">Active contributor</p>
+  </div>
+
+  <div onclick="selectRole(this, 'Optimized')" class="roleCard">
+    <p class="roleTitle">@Optimized</p>
+    <p class="roleDesc">Power user of the ecosystem</p>
+  </div>
+
+  <div onclick="selectRole(this, 'Chronicler')" class="roleCard" style="grid-column: span 2;">
+    <p class="roleTitle">@Chronicler</p>
+    <p class="roleDesc">Content creator and storyteller</p>
+  </div>
+
+</div>
+
+<!-- Discord Handle -->
+<div style="margin-bottom: 16px;">
+  <input type="text" id="discordHandle" placeholder="Discord handle (e.g. freeboy#0001)" style="width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(192,192,192,0.2); border-radius: 8px; color: white; font-family: 'Inter', sans-serif; font-size: 0.95em; outline: none;">
+</div>
+
+<!-- Twitter Handle -->
+<div style="margin-bottom: 24px;">
+  <input type="text" id="twitterHandle" placeholder="Twitter handle (e.g. @FreeboyShed)" style="width: 100%; padding: 14px 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(192,192,192,0.2); border-radius: 8px; color: white; font-family: 'Inter', sans-serif; font-size: 0.95em; outline: none;">
+</div>
+
+<!-- Submit button -->
+<button onclick="saveIdentity()" style="width: 100%; padding: 14px; background: white; color: #1a1a1a; border: none; border-radius: 8px; font-family: 'Orbitron', sans-serif; font-size: 0.9em; letter-spacing: 2px; font-weight: bold; cursor: pointer; margin-bottom: 16px;">CONTINUE</button>
+
+<!-- Error -->
+<p id="identityError" style="font-family: 'Inter', sans-serif; font-size: 0.85em; color: #ff4444; text-align: center; display: none;"></p>
+
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>
+
+
+
+<script>
+
+const SUPABASE_URL = 'https://hpjztfiijgkkbexpxxqz.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imhwanp0Zmlpamdra2JleHB4eHF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NTA4ODUsImV4cCI6MjA5NzIyNjg4NX0.LbS4fFhnFWBg3U2dqV6eVERbX-GG4d0oPk40XKkMLSA';
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let selectedRole = '';
+
+function selectRole(el, role) {
+  document.querySelectorAll('.roleCard').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedRole = role;
+ 
+  localStorage.setItem('selectedRole', role);
+
+}
+
+async function saveIdentity() {
+  const discord = document.getElementById('discordHandle').value.trim();
+  const twitter = document.getElementById('twitterHandle').value.trim();
+  const errorEl = document.getElementById('identityError');
+
+  if (!selectedRole) {
+    errorEl.textContent = 'Please select your Discord role.';
+    errorEl.style.display = 'block';
+    return;
+  }
+
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (!session) { window.location.href = 'login.html'; return; }
+
+  const { error } = await supabaseClient.from('users').upsert({
+    id: session.user.id,
+    discord_role: selectedRole,
+    discord_username: discord || null,
+    twitter_username: twitter || null
+  });
+
+  if (error) {
+    errorEl.textContent = error.message;
+    errorEl.style.display = 'block';
+  } else {
+    window.location.href = 'upload-profile.html';
+  }
+}
+
+
+
+
+
+
+</script>
+</body>
+</html>
