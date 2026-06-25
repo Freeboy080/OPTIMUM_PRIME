@@ -112,7 +112,7 @@ const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 function connectDiscord() {
   supabaseClient.auth.signInWithOAuth({
     provider: 'discord',
-    options: { redirectTo: 'http://localhost:8000/upload-profile.html' }
+    options: { redirectTo: 'https://optimum-prime.vercel.app/upload-profile.html' }
   });
 }
 
