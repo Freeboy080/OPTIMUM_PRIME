@@ -196,7 +196,7 @@ async function handleLogin() {
 function loginWithDiscord() {
   supabaseClient.auth.signInWithOAuth({
     provider: 'discord',
-    options: { redirectTo: 'http://localhost:8000/index.html' }
+    options: { redirectTo: 'https://optimum-prime.vercel.app/index.html' }
   });
 }
 
